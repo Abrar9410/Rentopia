@@ -1,7 +1,8 @@
 "use server"
 
 import { FieldValues } from "react-hook-form";
-import { deleteTokens, getCookie, setTokens } from "./cookies";
+import { deleteTokens, getCookie, setCookie } from "../lib/cookies-tokens";
+import { parse } from "cookie";
 
 
 export const login = async (data: FieldValues) => {
@@ -12,10 +13,22 @@ export const login = async (data: FieldValues) => {
     });
     
     const loginInfo = await res.json();
-   
-    if (loginInfo.success) {
-        const { token, refreshToken } = loginInfo.data;
-        await setTokens(token, refreshToken);
+
+    const setCookieHeaders = res.headers.getSetCookie();
+
+    if (setCookieHeaders) {
+        setCookieHeaders.forEach((cookie: string) => {
+            const tokenObject = parse(cookie);
+
+            if (tokenObject.token) {
+                setCookie("token", tokenObject);
+            };
+            if (tokenObject.refreshToken) {
+                setCookie("refreshToken", tokenObject);
+            };
+        });
+    } else {
+        return new Error("Set-Cookie headers are missing in the response.");
     };
 
     return loginInfo;
@@ -55,6 +68,7 @@ export const changePassword = async (data: FieldValues) => {
             Cookie: `token=${token.value}`,
             "Content-Type": "application/json"
         },
+        credentials: "include",
         body: JSON.stringify(data)
     });
 
@@ -62,5 +76,37 @@ export const changePassword = async (data: FieldValues) => {
         return res;
     };
 
+    return await res.json();
+};
+
+export const forgotPassword = async (data: FieldValues) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/auth/forgot-password`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+    return await res.json();
+};
+
+export const resetPassword = async (data: FieldValues) => {
+    const {token, ...payload} = data;
+    if (!token) {
+        return {
+            success: false,
+            message: "Reset-Password Token is missing!"
+        };
+    };
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/auth/reset-password`, {
+        method: "POST",
+        headers: {
+            Cookie: `token=${token}`,
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify(payload)
+    });
     return await res.json();
 };

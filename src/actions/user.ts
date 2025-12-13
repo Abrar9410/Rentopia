@@ -1,7 +1,6 @@
 "use server"
 
-import { FieldValues } from "react-hook-form";
-import { getCookie } from "./cookies";
+import { getCookie } from "../lib/cookies-tokens";
 
 
 export const createUser = async (payload: FormData) => {
@@ -80,6 +79,25 @@ export const updateUser = async (userId: string, payload: FormData) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/update-user/${userId}`, {
         headers: {Cookie: `token=${token.value}`},
         body: payload,
+        credentials: "include",
+    });
+
+    if (!res.ok) {
+        return res;
+    };
+     
+    return await res.json();
+};
+
+export const deleteUser = async (userId: string) => {
+    const token = await getCookie("token");
+    if (!token) {
+        return null;
+    };
+    
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/delete-user/${userId}`, {
+        method: "DELETE",
+        headers: {Cookie: `token=${token.value}`},
         credentials: "include",
     });
 
