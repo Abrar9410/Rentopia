@@ -234,7 +234,7 @@ export function RegisterForm() {
           )}
         />
 
-        <Button type="submit" disabled={submitting} className="w-full text-white">
+        <Button type="submit" disabled={submitting} className="w-full">
           {
             submitting ?
               <span className="w-3 h-3 border-2 animate-spin flex items-center justify-center border-y-foreground dark:border-y-background border-x-background dark:border-x-foreground rounded-full"></span> :

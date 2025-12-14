@@ -1,72 +1,28 @@
-"use client"
-
-import * as React from "react"
+"use client";
 
 import {
-  Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import Image from "next/image";
-import ConfirmationAlert from "./ConfirmationAlert";
-import { /*ChartBarStacked,*/ CircleUser, ImagePlus, LogOut, MonitorCog, NotebookPen, NotepadText } from "lucide-react";
-import { useUser } from "@/contexts/UserContext";
+import ConfirmationAlert from "../ConfirmationAlert";
+import { LogOut } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { logout } from "@/actions/auth";
 import { toast } from "sonner";
+import { ISidebarMenuSection } from "@/types/sideMenu";
 
 
-const navMain = [
-  {
-    title: "Manage Portfolio",
-    url: "/dashboard",
-    items: [
-      // {
-      //   title: "Overview",
-      //   url: "/dashboard/overview",
-      //   icon: <ChartBarStacked className="h-5"/>
-      // },
-      {
-        title: "Add Project",
-        url: "/dashboard/add-project",
-        icon: <ImagePlus className="h-5"/>
-      },
-      {
-        title: "Create Blog",
-        url: "/dashboard/create-blog",
-        icon: <NotebookPen className="h-5"/>
-      },
-      {
-        title: "Manage Projects",
-        url: "/dashboard/manage-projects",
-        icon: <MonitorCog className="h-5"/>
-      },
-      {
-        title: "Manage Blogs",
-        url: "/dashboard/manage-blogs",
-        icon: <NotepadText className="h-5"/>
-      },
-      {
-        title: "Profile",
-        url: "/dashboard/profile",
-        icon: <CircleUser className="h-5" />
-      }
-    ],
-  }
-];
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export default function AppSidebarContent({ sideMenu }: {sideMenu: ISidebarMenuSection[]}) {
 
-  const { setUser } = useUser();
   const router = useRouter();
   const location = usePathname();
 
@@ -74,7 +30,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const toastId = toast.loading("Logging Out...");
     const res = await logout();
     if (res.success) {
-      setUser(null);
+      router.refresh();
       toast.success("Logged Out Successfully", { id: toastId });
       router.push("/");
     } else {
@@ -83,15 +39,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   return (
-    <Sidebar {...props}>
-      <SidebarHeader>
-        <Link href="/" className="mt-2 ml-5">
-          <Image src="/my_logo.PNG" alt="Logo" width={60} height={40} priority className="w-[60px] h-[40px]"/>
-        </Link>
-      </SidebarHeader>
+    <>
       <SidebarContent className="pl-3">
         {/* We create a SidebarGroup for each parent. */}
-        {navMain.map((item) => (
+        {sideMenu.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
@@ -100,7 +51,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild isActive={location.startsWith(item.url)}>
                       <Link href={item.url}>
-                        <p className={`${location.startsWith(item.url) && "text-portfolio"} flex items-center gap-2`}>
+                        <p className={`${location.startsWith(item.url) && "text-primary"} flex items-center gap-2`}>
                           {item.icon}
                           {item.title}
                         </p>
@@ -121,6 +72,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuButton>
         </ConfirmationAlert>
       </SidebarFooter>
-    </Sidebar>
+    </>
   )
 }

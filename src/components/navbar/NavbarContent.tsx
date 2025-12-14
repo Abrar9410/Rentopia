@@ -106,20 +106,20 @@ export default function NavbarContent({ user }: { user: Partial<IUser> | undefin
         </div>
         <Link href="/" className="flex items-center">
           <Image src="/Rentopia-logo.PNG" alt="Logo" width={20} height={20} priority className="w-5 h-5" />
-          <div className="w-max text-xl font-bold text-primary">entopia</div>
+          <div className="w-max text-xl font-bold text-primary dark:text-blue-600">entopia</div>
         </Link>
       </div>
       {/* Main nav */}
       <div>
         {/* Navigation menu */}
         <NavigationMenu className="h-full *:h-full max-md:hidden">
-          <NavigationMenuList className="h-full gap-2">
+          <NavigationMenuList className="h-full gap-1 lg:gap-2">
             {navigationLinks.map((link, index) => (
               link.role === "PUBLIC" &&
               <NavigationMenuItem key={index} className="h-full">
                 <NavigationMenuLink
                   asChild
-                  className="hover:text-portfolio border-b-portfolio hover:border-b-portfolio data-[active]:border-b-portfolio h-full justify-center rounded-none border-y-2 border-transparent py-1.5 font-medium hover:bg-transparent data-[active]:bg-transparent!"
+                    className="data-active:text-primary dark:data-active:text-blue-700 data-active:underline h-full justify-center rounded-none border-y-2 border-transparent py-1.5 font-medium hover:bg-transparent"
                   active={link.href === "/" ? location === "/" : location.startsWith(link.href)}
                 >
                   <Link href={link.href}>{link.label}</Link>
@@ -144,7 +144,7 @@ export default function NavbarContent({ user }: { user: Partial<IUser> | undefin
             </> :
             <Popover>
               <PopoverTrigger asChild>
-                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-portfolio cursor-pointer hover:animate-pulse">
+                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary cursor-pointer hover:animate-pulse">
                   <Image
                     src={user.picture ? user.picture as string : "https://res.cloudinary.com/example.png"}
                     alt={user.name?.slice(0, 1).toUpperCase() as string}
@@ -161,9 +161,8 @@ export default function NavbarContent({ user }: { user: Partial<IUser> | undefin
                       <NavigationMenuLink
                         asChild
                         className="py-1.5 hover:text-portfolio"
-                        active={location.startsWith("/dashboard")}
                       >
-                        <Link href="/dashboard">
+                        <Link href={`${user.role === 'ADMIN' ? '/admin' : ''}/dashboard/overview`}>
                           <p className="flex items-center gap-2">
                             <Home className="h-5 text-portfolio" />
                             Dashboard
