@@ -9,7 +9,10 @@ export const metadata: Metadata = {
 };
 
 
-const LoginPage = () => {
+const LoginPage = async ({ searchParams }: { searchParams: Promise<{ redirect?: string }> }) => {
+
+    const {redirect} = await searchParams;
+
     return (
         <div className="min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-100px)] xl:min-h-[calc(100vh-200px)] flex flex-col items-center justify-center">
             <div className="w-11/12 max-w-md">
@@ -21,7 +24,7 @@ const LoginPage = () => {
                         </p>
                     </div>
                     <div className="grid gap-6">
-                        <LoginForm />
+                        <LoginForm redirect={redirect || ""}/>
                     </div>
                     <div className="text-center text-sm">
                         Don&apos;t have an account?{" "}

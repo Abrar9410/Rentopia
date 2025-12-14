@@ -34,17 +34,14 @@ const registerSchema = z
     picture: z
       .instanceof(File, { message: "Profile Picture must be a valid file" })
       .optional(),
-    role: z.enum(["USER", "AGENT"]),
     phone: z
       .string({ error: "Phone Number must be string" })
       .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
         message: "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
-      })
-      .optional(),
+      }),
     address: z
       .string({ error: "Address must be string" })
-      .max(200, "Address cannot exceed 200 characters.")
-      .optional(),
+      .max(200, "Address cannot exceed 200 characters."),
     password: z
       .string()
       .min(8, { error: "Password must be at least 8 characters long" })
@@ -65,7 +62,7 @@ const registerSchema = z
   });
 
 export function RegisterForm() {
-  
+
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
 
@@ -84,7 +81,7 @@ export function RegisterForm() {
 
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
     const toastId = toast.loading("Creating Account...");
-    const {picture, confirmPassword, ...rest} = data;
+    const { picture, confirmPassword, ...rest } = data;
 
     const payload = new FormData();
 
@@ -99,9 +96,9 @@ export function RegisterForm() {
     try {
       const res = await createUser(payload);
       if (res.success) {
-        toast.success("Your Account is Created Successfully! You can now login with your credentials.", {id: toastId});
+        toast.success("Your Account is Created Successfully! You can now login with your credentials.", { id: toastId });
       };
-
+      form.reset();
       router.push("/login");
     } catch (error: any) {
       toast.error(error.message, { id: toastId });
@@ -109,137 +106,142 @@ export function RegisterForm() {
   };
 
   return (
-    
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="John Doe" {...field} />
-                  </FormControl>
-                  <FormDescription className="sr-only">
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="example123@company.com"
-                      type="email"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription className="sr-only">
-                    This is your account email.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex max-sm:flex-col items-center gap-6">
-              {/* Picture */}
-              <FormField
-                control={form.control}
-                name="picture"
-                render={({ field }) => (
-                  <FormItem className="min-w-64 max-w-md mx-auto">
-                    <FormLabel className="w-max mx-auto">Thumbnail Image</FormLabel>
-                    <FormControl>
-                      <ImageUploader {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Phone (Optional)</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="01XXXXXXXXX"
-                        type="tel"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription className="sr-only">
-                      This is your phone number.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address (Optional)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Write your address" {...field} />
-                  </FormControl>
-                  <FormDescription className="sr-only">
-                    This is your address.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Password {...field} />
-                  </FormControl>
-                  <FormDescription className="sr-only">
-                    This is Password field for your account.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <FormControl>
-                    <Password {...field} />
-                  </FormControl>
-                  <FormDescription className="sr-only">
-                    Confirm your Password here.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={submitting} className="w-full text-white cursor-pointer">
-              {
-                submitting ?
-                  <span className="w-3 h-3 border-2 animate-spin flex items-center justify-center border-y-foreground dark:border-y-background border-x-background dark:border-x-foreground rounded-full"></span> :
-                  'Submit'
-              }
-            </Button>
-          </form>
-        </Form>
+
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="John Doe" {...field} />
+              </FormControl>
+              <FormDescription className="sr-only">
+                This is your public display name.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="example123@company.com"
+                  type="email"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="sr-only">
+                This is your account email.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Picture */}
+        <FormField
+          control={form.control}
+          name="picture"
+          render={({ field }) => (
+            <FormItem className="min-w-64 max-w-md mx-auto">
+              <FormLabel className="w-max mx-auto">Thumbnail Image</FormLabel>
+              <FormControl>
+                <ImageUploader {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormLabel>Phone</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="01XXXXXXXXX"
+                  type="tel"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="sr-only">
+                This is your phone number.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Address</FormLabel>
+              <FormControl>
+                <Input placeholder="Write your address" {...field} />
+              </FormControl>
+              <FormDescription className="sr-only">
+                This is your address.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Password {...field} />
+              </FormControl>
+              <FormDescription className="sr-only">
+                This is Password field for your account.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirm Password</FormLabel>
+              <FormControl>
+                <Password {...field} />
+              </FormControl>
+              <FormDescription className="sr-only">
+                Confirm your Password here.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" disabled={submitting} className="w-full text-white">
+          {
+            submitting ?
+              <span className="w-3 h-3 border-2 animate-spin flex items-center justify-center border-y-foreground dark:border-y-background border-x-background dark:border-x-foreground rounded-full"></span> :
+              'Submit'
+          }
+        </Button>
+      </form>
+    </Form>
   );
 }

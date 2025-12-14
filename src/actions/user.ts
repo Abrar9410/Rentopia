@@ -4,13 +4,17 @@ import { getCookie } from "../lib/cookies-tokens";
 
 
 export const createUser = async (payload: FormData) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/create-user`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/register`, {
         method: "POST",
         body: payload,
     });
 
     if (!res.ok) {
-        return res;
+        return {
+            success: false,
+            message: "An Error Occurred! Please try again.",
+            data: null
+        };
     };
      
     return await res.json();
@@ -19,18 +23,22 @@ export const createUser = async (payload: FormData) => {
 export const getMe = async () => {
     const token = await getCookie("token");
     if (!token) {
-        return null;
+        return {
+            success: false,
+            message: "You are not logged in!",
+            data: {}
+        };
     };
     
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/me`, {
         headers: {Cookie: `token=${token.value}`},
         credentials: "include",
+        next: {
+            tags: ["USER"]
+        }
     });
 
-    if (!res.ok) {
-        return null;
-    };
-    const data = await res.json(); 
+    const data = await res.json();
     return data.data;
 };
 

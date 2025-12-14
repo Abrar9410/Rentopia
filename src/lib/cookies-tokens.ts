@@ -19,7 +19,7 @@ interface ITokenObject {
 
 export const setCookie = async (name: "token" | "refreshToken", tokenObject: ITokenObject) => {
     const cookieStore = await cookies();
-    cookieStore.set(name, (tokenObject.token || tokenObject.refreshToken) as string, {
+    cookieStore.set(name, (tokenObject.token ?? tokenObject.refreshToken) as string, {
         httpOnly: tokenObject.httpOnly || true,
         secure: tokenObject.Secure || true,
         sameSite: tokenObject.SameSite || "none",

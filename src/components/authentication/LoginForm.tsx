@@ -17,7 +17,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Password from "@/components/ui/Password";
 import { login } from "@/actions/auth";
-// import { useUser } from "@/contexts/UserContext";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -29,10 +28,7 @@ const loginSchema = z.object({
 });
 
 
-export function LoginForm({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function LoginForm({redirect}: {redirect: string}) {
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -43,7 +39,6 @@ export function LoginForm({
   });
 
   const [submitting, setSubmitting] = useState<boolean>(false);
-  // const { setUser } = useUser();
   const router = useRouter();
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
@@ -52,9 +47,9 @@ export function LoginForm({
     try {
       const res = await login(data);
       if (res.success) {
-        // setUser(res.data.user);
         setSubmitting(false);
-        router.push("/dashboard");
+        router.push(redirect || "/");
+        router.refresh();
         toast.success(res.message, { id: toastId });
       } else if (res.message) {
         toast.error(res.message, { id: toastId });

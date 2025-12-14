@@ -3,6 +3,7 @@
 import { FieldValues } from "react-hook-form";
 import { deleteTokens, getCookie, setCookie } from "../lib/cookies-tokens";
 import { parse } from "cookie";
+import { revalidateTag } from "next/cache";
 
 
 export const login = async (data: FieldValues) => {
@@ -17,19 +18,21 @@ export const login = async (data: FieldValues) => {
     const setCookieHeaders = res.headers.getSetCookie();
 
     if (setCookieHeaders) {
-        setCookieHeaders.forEach((cookie: string) => {
+        for (const cookie of setCookieHeaders) {
             const tokenObject = parse(cookie);
 
             if (tokenObject.token) {
-                setCookie("token", tokenObject);
+                await setCookie("token", tokenObject);
             };
             if (tokenObject.refreshToken) {
-                setCookie("refreshToken", tokenObject);
+                await setCookie("refreshToken", tokenObject);
             };
-        });
+        };
     } else {
         return new Error("Set-Cookie headers are missing in the response.");
     };
+
+    revalidateTag("USER", {expire: 0});
 
     return loginInfo;
 };
@@ -48,6 +51,7 @@ export const logout = async () => {
 
     if (res.ok) {
         await deleteTokens();
+        revalidateTag("USER", {expire: 0})
     };
 
     return await res.json();
