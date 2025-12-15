@@ -5,7 +5,7 @@ import { ISidebarMenuSection } from "@/types/sideMenu";
 import { ChartBarStacked, CircleUser } from "lucide-react";
 
 
-export const getSideMenu = (role: UserRole): ISidebarMenuSection[] | [] => {
+export const getSideMenu = async (role: UserRole): Promise<ISidebarMenuSection[] | []> => {
     switch (role) {
         case "ADMIN":
             return [
@@ -55,11 +55,11 @@ export const getSideMenu = (role: UserRole): ISidebarMenuSection[] | [] => {
                             url: "/admin/dashboard/manage-orders",
                             icon: <CircleUser className="h-5" /> 
                         },
-                        {
-                            title: "Manage Payments",
-                            url: "/admin/dashboard/manage-payments",
-                            icon: <CircleUser className="h-5" /> 
-                        }
+                        // {
+                        //     title: "Manage Payments",
+                        //     url: "/admin/dashboard/manage-payments",
+                        //     icon: <CircleUser className="h-5" /> 
+                        // }
                     ]
                 },
                 {
@@ -83,7 +83,7 @@ export const getSideMenu = (role: UserRole): ISidebarMenuSection[] | [] => {
                     items: [
                         {
                             title: "Overview",
-                            url: "dashboard/overview",
+                            url: "/dashboard/overview",
                             icon: <ChartBarStacked className="h-5" />
                         }
                     ],
@@ -109,8 +109,8 @@ export const getSideMenu = (role: UserRole): ISidebarMenuSection[] | [] => {
                     url: "/dashboard",
                     items: [
                         {
-                            title: "Orders for Your Items",
-                            url: "/dashboard/orders",
+                            title: "Customer Orders",
+                            url: "/dashboard/customer-orders",
                             icon: <CircleUser className="h-5" />
                         },
                         {
@@ -118,11 +118,11 @@ export const getSideMenu = (role: UserRole): ISidebarMenuSection[] | [] => {
                             url: "/dashboard/my-orders",
                             icon: <CircleUser className="h-5" />
                         },
-                        {
-                            title: "Payments",
-                            url: "/dashboard/payments",
-                            icon: <CircleUser className="h-5" />
-                        }
+                        // {
+                        //     title: "Payments",
+                        //     url: "/dashboard/payments",
+                        //     icon: <CircleUser className="h-5" />
+                        // }
                     ]
                 },
                 {

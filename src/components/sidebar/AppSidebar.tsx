@@ -11,12 +11,12 @@ const AppSidebar = async ({...props}) => {
 
     const user = await getCurrentUser();
 
-    const sideMenu = getSideMenu(user!.role as UserRole);
+    const sideMenu = await getSideMenu(user!.role as UserRole);
 
     return (
         <Sidebar {...props}>
             <SidebarHeader>
-                <Link href="/" className="flex items-center mt-2 ml-5">
+                <Link href="/" className="flex items-center mt-2 justify-center">
                     <Image src="/Rentopia-logo.PNG" alt="Logo" width={20} height={20} priority className="w-5 h-5" />
                     <div className="w-max text-xl font-bold text-primary">entopia</div>
                 </Link>

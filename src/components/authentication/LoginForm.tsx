@@ -20,6 +20,7 @@ import { login } from "@/actions/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useState } from "react";
+import { getDefaultDashboardRoute } from "@/lib/auth-utils";
 
 
 const loginSchema = z.object({
@@ -48,8 +49,7 @@ export function LoginForm({redirect}: {redirect: string}) {
       const res = await login(data);
       if (res.success) {
         setSubmitting(false);
-        router.push(redirect || "/");
-        router.refresh();
+        router.push(redirect || getDefaultDashboardRoute(res.data.role));
         toast.success(res.message, { id: toastId });
       } else if (res.message) {
         toast.error(res.message, { id: toastId });
