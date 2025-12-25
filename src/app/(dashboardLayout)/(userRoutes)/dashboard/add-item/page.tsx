@@ -1,3 +1,5 @@
+import AddItemForm from "@/components/dashboard/addItemPage/AddItemForm";
+import PageHeader from "@/components/PageHeader";
 import { Metadata } from "next";
 
 
@@ -9,9 +11,10 @@ export const metadata: Metadata = {
 
 const AddItemPage = () => {
     return (
-        <div>
-            ADD ITEM
-        </div>
+        <>
+            <PageHeader title="Add Item" subtitle="Fill up the form with Item details"/>
+            <AddItemForm />
+        </>
     );
 };
 

@@ -31,3 +31,44 @@ export interface IUser {
     createdAt?: Date;
     updatedAt?: Date;
 };
+
+export enum Category {
+    ELECTRONICS = "Electronics",
+    FURNITURE = "Furniture",
+    TOOLS = "Tools",
+    SPORTS = "Sports",
+    HOME_APPLIANCES = "Home Appliances",
+    BOOKS = "Books",
+    OTHERS = "Others"
+};
+
+export enum Current_Status {
+    AVAILABLE = "AVAILABLE",
+    OCCUPIED = "OCCUPIED",
+    UNDER_MAINTENANCE = "UNDER_MAINTENANCE",
+    FLAGGED = "FLAGGED",
+    BLOCKED = "BLOCKED"
+};
+
+export interface Adv_Booking {
+    startDate: Date | string;
+    endDate: Date | string;
+};
+
+export interface IItem {
+    _id: string;
+    title: string;
+    description: string;
+    specifications?: string[];
+    category: Category;
+    images: string[];
+    pricePerDay: number;
+    available: boolean;
+    current_status: Current_Status;
+    owner: string;
+    location: string;
+    adv_bookings: Adv_Booking[] | [];
+    createdAt?: Date;
+    updatedAt?: Date;
+    deleteImages?: string[];
+};
