@@ -79,7 +79,6 @@ const EditItemFormModal = ({ children, item }: IEditItemModalProps) => {
         images,
         specifications,
         category,
-        current_status,
         pricePerDay,
         location,
         available
@@ -113,8 +112,8 @@ const EditItemFormModal = ({ children, item }: IEditItemModalProps) => {
 
     const onSubmit = async (data: EditItemFormValues) => {
         setSubmitting(true);
-        const { image1, specifications, pricePerDay, available, ...rest } = data;
         const toastId = toast.loading("Updating Item Info...");
+        const { image1, specifications, pricePerDay, available, ...rest } = data;
 
         const formData = new FormData();
 

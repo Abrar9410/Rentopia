@@ -18,14 +18,13 @@ export interface IUser {
     _id: string;
     name: string;
     email: string;
-    password?: string;
     phone: string;
     picture?: string;
     address: string;
-    earnings?: number;
-    isDeleted?: boolean;
-    isActive?: IsActive;
-    isVerified?: boolean;
+    earnings: number;
+    isDeleted: boolean;
+    isActive: IsActive;
+    isVerified: boolean;
     role: UserRole;
     auths: IAuthProvider[];
     createdAt?: Date;

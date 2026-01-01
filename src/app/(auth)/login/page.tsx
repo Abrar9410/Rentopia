@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { LoginForm } from "@/components/authentication/LoginForm";
+import LoginForm from "@/components/authentication/LoginForm";
 import Link from "next/link";
 
 

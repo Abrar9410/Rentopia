@@ -34,7 +34,8 @@ export const addItem = async (payload: FormData) => {
 export const getAllAvailableItems = async (query?: string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/items${query ? `?${query}` : ""}`, {
         next: {
-            tags: ["AVAILABLE_ITEMS"]
+            tags: ["AVAILABLE_ITEMS"],
+            revalidate: 300
         }
     });
 
@@ -54,7 +55,8 @@ export const getAllItems = async (query?: string) => {
         headers: { Cookie: `token=${token.value}` },
         credentials: "include",
         next: {
-            tags: ["ITEMS"]
+            tags: ["ITEMS"],
+            revalidate: 300
         }
     });
 

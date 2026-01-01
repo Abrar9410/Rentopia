@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidateTag } from "next/cache";
 import { getCookie } from "../lib/cookies-tokens";
 
 
@@ -51,10 +52,18 @@ export const getAllUsers = async (query: string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/all-users${query ? `?${query}` : ""}`, {
         headers: {Cookie: `token=${token.value}`},
         credentials: "include",
+        next: {
+            tags: ["USERS"],
+            revalidate: 1800
+        }
     });
 
     if (!res.ok) {
-        return null;
+        return {
+            success: false,
+            message: "An Error Occurred! Please try again.",
+            data: null
+        };
     };
      
     return await res.json();
@@ -63,12 +72,15 @@ export const getAllUsers = async (query: string) => {
 export const getSingleUser = async (userId: string) => {
     const token = await getCookie("token");
     if (!token) {
-        return null;
+        return { message: "Authorization Token Missing! Please Login." };
     };
     
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/${userId}`, {
         headers: {Cookie: `token=${token.value}`},
         credentials: "include",
+        next: {
+            tags: [`USER-${userId}`]
+        }
     });
 
     if (!res.ok) {
@@ -81,10 +93,11 @@ export const getSingleUser = async (userId: string) => {
 export const updateUser = async (userId: string, payload: FormData) => {
     const token = await getCookie("token");
     if (!token) {
-        return null;
+        return { message: "Authorization Token Missing! Please Login." };
     };
     
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/update-user/${userId}`, {
+        method: "PATCH",
         headers: {Cookie: `token=${token.value}`},
         body: payload,
         credentials: "include",
@@ -93,6 +106,10 @@ export const updateUser = async (userId: string, payload: FormData) => {
     if (!res.ok) {
         return res;
     };
+
+    revalidateTag("USERS", "max");
+    revalidateTag("USER", {expire: 0});
+    revalidateTag(`USER-${userId}`, {expire: 0});
      
     return await res.json();
 };
@@ -100,7 +117,7 @@ export const updateUser = async (userId: string, payload: FormData) => {
 export const deleteUser = async (userId: string) => {
     const token = await getCookie("token");
     if (!token) {
-        return null;
+        return { message: "Authorization Token Missing! Please Login." };
     };
     
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/delete-user/${userId}`, {
@@ -112,6 +129,9 @@ export const deleteUser = async (userId: string) => {
     if (!res.ok) {
         return res;
     };
+
+    revalidateTag("USERS", { expire: 0 });
+    revalidateTag(`USER-${userId}`, { expire: 0 });
      
     return await res.json();
 };

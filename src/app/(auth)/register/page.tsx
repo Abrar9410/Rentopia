@@ -1,4 +1,4 @@
-import { RegisterForm } from "@/components/authentication/RegisterForm";
+import RegisterForm from "@/components/authentication/RegisterForm";
 import { Metadata } from "next";
 import Link from "next/link";
 

@@ -1,4 +1,5 @@
 import { getMyItems } from "@/actions/item";
+import { TableSkeleton } from "@/components/dashboard/TableSkeleton";
 import MyItemsTable from "@/components/dashboard/user/my-items-page/MyItemsTable";
 import PageHeader from "@/components/PageHeader";
 import Pagination from "@/components/Pagination";
@@ -11,6 +12,7 @@ import { Category } from "@/types";
 import { Plus } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 
 
 export const metadata: Metadata = {
@@ -51,7 +53,9 @@ const MyItemsPage = async ({ searchParams }: { searchParams: Promise<{ [key: str
                     </Button>
                 </Link>
             </div>
-            <MyItemsTable items={items}/>
+            <Suspense fallback={<TableSkeleton columns={11}/>}>
+                <MyItemsTable items={items} />
+            </Suspense>
             <Pagination currentPage={meta.page} totalPages={meta.totalPages} limit={meta.limit} />
         </>
     );

@@ -29,7 +29,7 @@ const loginSchema = z.object({
 });
 
 
-export function LoginForm({redirect}: {redirect: string}) {
+export default function LoginForm ({redirect}: {redirect: string}) {
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),

@@ -32,8 +32,14 @@ const registerSchema = z
       .max(50),
     email: z.email(),
     picture: z
-      .instanceof(File, { message: "Profile Picture must be a valid file" })
-      .optional(),
+      .instanceof(File)
+      .refine(
+        (file) =>
+          ["image/png", "image/jpeg", "image/webp"].includes(file.type),
+        "Only PNG, JPEG or WEBP images are allowed"
+      )
+      .optional()
+      .nullable(),
     phone: z
       .string({ error: "Phone Number must be string" })
       .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
@@ -61,7 +67,7 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
-export function RegisterForm() {
+export default function RegisterForm() {
 
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
@@ -81,6 +87,7 @@ export function RegisterForm() {
 
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
     const toastId = toast.loading("Creating Account...");
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { picture, confirmPassword, ...rest } = data;
 
     const payload = new FormData();
@@ -153,7 +160,7 @@ export function RegisterForm() {
           name="picture"
           render={({ field }) => (
             <FormItem className="min-w-64 max-w-md mx-auto">
-              <FormLabel className="w-max mx-auto">Thumbnail Image</FormLabel>
+              <FormLabel className="w-max mx-auto">Profile Picture</FormLabel>
               <FormControl>
                 <ImageUploader {...field} />
               </FormControl>
