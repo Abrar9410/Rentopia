@@ -51,24 +51,24 @@ export enum Current_Status {
 };
 
 export interface Adv_Booking {
-    startDate: Date | string;
-    endDate: Date | string;
+    startDate: Date;
+    endDate: Date;
 };
 
 export interface IItem {
     _id: string;
     title: string;
     description: string;
-    specifications?: string[];
+    specifications: string[];
     category: Category;
     images: string[];
     pricePerDay: number;
     available: boolean;
     current_status: Current_Status;
-    owner: string;
+    owner: IUser;
     location: string;
     adv_bookings: Adv_Booking[] | [];
-    createdAt?: Date;
-    updatedAt?: Date;
+    createdAt: Date;
+    updatedAt: Date;
     deleteImages?: string[];
 };

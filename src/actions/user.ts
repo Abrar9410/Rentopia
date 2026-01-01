@@ -48,7 +48,7 @@ export const getAllUsers = async (query: string) => {
         return {message: "Authorization Token Missing! Please Login."};
     };
     
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/all-users${query || ""}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/all-users${query ? `?${query}` : ""}`, {
         headers: {Cookie: `token=${token.value}`},
         credentials: "include",
     });

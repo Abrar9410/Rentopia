@@ -10,9 +10,11 @@ import { useEffect, useState } from "react";
 interface ImageUploaderProps {
   value?: File | null;
   onChange: (file: File | null) => void;
-}
+  defaultImg?: string | null;
+  setDefaultImg?: (imageURL: string | null) => void;
+};
 
-export default function ImageUploader({ value, onChange }: ImageUploaderProps) {
+export default function ImageUploader({ value, onChange, defaultImg, setDefaultImg }: ImageUploaderProps) {
   const maxSizeMB = 5
   const maxSize = maxSizeMB * 1024 * 1024 // 5MB default
 
@@ -45,10 +47,12 @@ export default function ImageUploader({ value, onChange }: ImageUploaderProps) {
   useEffect(() => {
     if (value) {
       setPreviewUrl(files[0]?.preview);
+    } else if (defaultImg) {
+      setPreviewUrl(defaultImg);
     } else {
       setPreviewUrl(null);
     }
-  }, [files, value]);
+  }, [files, value, defaultImg]);
 
 
   return (
@@ -101,7 +105,12 @@ export default function ImageUploader({ value, onChange }: ImageUploaderProps) {
             <button
               type="button"
               className="focus-visible:border-ring focus-visible:ring-ring/50 z-50 flex size-8 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white transition-[color,box-shadow] outline-none hover:bg-black/80 focus-visible:ring-[3px]"
-              onClick={() => removeFile(files[0]?.id)}
+              onClick={() => {
+                removeFile(files[0]?.id);
+                if (setDefaultImg) {
+                  setDefaultImg(null);
+                };
+              }}
               aria-label="Remove image"
             >
               <XIcon className="size-4" aria-hidden="true" />

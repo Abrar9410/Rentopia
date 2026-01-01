@@ -32,7 +32,7 @@ export const addItem = async (payload: FormData) => {
 };
 
 export const getAllAvailableItems = async (query?: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/items${query || ""}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/items${query ? `?${query}` : ""}`, {
         next: {
             tags: ["AVAILABLE_ITEMS"]
         }
@@ -50,7 +50,7 @@ export const getAllItems = async (query?: string) => {
         };
     };
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/items/all-items${query || ""}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/items/all-items${query ? `?${query}` : ""}`, {
         headers: { Cookie: `token=${token.value}` },
         credentials: "include",
         next: {
@@ -70,7 +70,7 @@ export const getMyItems = async (query?: string) => {
         };
     };
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/items/my-items${query || ""}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/items/my-items${query? `?${query}` : ""}`, {
         headers: { Cookie: `token=${token.value}` },
         credentials: "include",
         next: {
@@ -146,7 +146,10 @@ export const editItemStatus = async (itemId: string, payload: {current_status: C
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/items/update-status/${itemId}`, {
         method: "PATCH",
-        headers: { Cookie: `token=${token.value}` },
+        headers: {
+            "Content-Type": "application/json",
+            Cookie: `token=${token.value}`
+        },
         body: JSON.stringify(payload),
         credentials: "include",
     });
@@ -172,7 +175,10 @@ export const editItemAvailability = async (itemId: string, payload: {available: 
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/items/update-availability/${itemId}`, {
         method: "PATCH",
-        headers: { Cookie: `token=${token.value}` },
+        headers: {
+            "Content-Type": "application/json",
+            Cookie: `token=${token.value}`
+        },
         body: JSON.stringify(payload),
         credentials: "include",
     });
