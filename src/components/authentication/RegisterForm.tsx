@@ -21,6 +21,8 @@ import ImageUploader from "../ImageUploader";
 import { useRouter } from "next/navigation";
 import { createUser } from "@/actions/user";
 import { toast } from "sonner";
+import { login } from "@/actions/auth";
+import { getDefaultDashboardRoute } from "@/lib/auth-utils";
 
 const registerSchema = z
   .object({
@@ -67,7 +69,7 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
-export default function RegisterForm() {
+export default function RegisterForm({ redirect }: { redirect: string }) {
 
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
@@ -104,9 +106,26 @@ export default function RegisterForm() {
       const res = await createUser(payload);
       if (res.success) {
         toast.success("Your Account is Created Successfully! You can now login with your credentials.", { id: toastId });
+        form.reset();
+        // router.push("/login");
+
+        // Auto Login
+        const newToastId = toast.loading("Logging in...");
+        try {
+          const loginRes = await login({ email: data.email, password: data.password});
+          if (loginRes.success) {
+            router.push(redirect || getDefaultDashboardRoute(loginRes.data.role));
+            toast.success(loginRes.message, { id: newToastId });
+          } else if (loginRes.message) {
+            toast.error(loginRes.message, { id: newToastId });
+          };
+        } catch (err: any) {
+          toast.error(err.message || "Login failed! Please try again from Login page.", { id: newToastId });
+        };
+
+      } else {
+        toast.error(res.message || "An error occurred while creating your account! Please try again.", { id: toastId });
       };
-      form.reset();
-      router.push("/login");
     } catch (error: any) {
       toast.error(error.message, { id: toastId });
     }

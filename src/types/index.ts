@@ -65,6 +65,7 @@ export interface IItem {
     available: boolean;
     current_status: Current_Status;
     owner: IUser;
+    ownerRole: UserRole;
     location: string;
     adv_bookings: Adv_Booking[] | [];
     createdAt: Date;

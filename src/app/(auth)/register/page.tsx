@@ -10,7 +10,10 @@ const metadata: Metadata = {
 };
 
 
-const RegisterPage = () => {
+const RegisterPage = async ({ searchParams }: { searchParams: Promise<{ redirect?: string }> }) => {
+
+    const { redirect } = await searchParams;
+
     return (
         <div className="min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-100px)] xl:min-h-[calc(100vh-200px)] flex flex-col items-center justify-center">
             <div className="w-11/12 max-w-md">
@@ -24,7 +27,7 @@ const RegisterPage = () => {
 
                     <div className="grid gap-6">
                     </div>
-                    <RegisterForm />
+                    <RegisterForm redirect={redirect || ""} />
                     <div className="text-center text-sm">
                         Already have an account?{" "}
                         <Link href="/login" className="underline underline-offset-4">

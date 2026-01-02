@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 import { addItem } from "@/actions/item";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Category } from "@/types";
+import { Category, UserRole } from "@/types";
 import { Plus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -126,7 +126,7 @@ export default function AddItemForm() {
             if (res.success) {
                 toast.success(res.message, { id: toastId });
                 form.reset();
-                router.push("/dashboard/my-items");
+                router.push(res.data.ownerRole === UserRole.ADMIN ? "/admin/dashboard/rentopia-items" : "/dashboard/my-items");
             } else {
                 toast.error(res.message, { id: toastId });
             }

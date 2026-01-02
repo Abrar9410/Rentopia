@@ -45,9 +45,9 @@ const Pagination = ({ currentPage, totalPages, limit }: TablePaginationProps) =>
 
     const currentLimit = searchParams.get("limit") || limit.toString();
 
-    // if (totalPages <= 1) {
-    //   return null;
-    // }
+    if (totalPages < 1) {
+      return null;
+    };
 
     return (
         <div className="flex flex-col justify-center items-center gap-4 mt-8">

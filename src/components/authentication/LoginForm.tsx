@@ -48,15 +48,14 @@ export default function LoginForm ({redirect}: {redirect: string}) {
     try {
       const res = await login(data);
       if (res.success) {
-        setSubmitting(false);
         router.push(redirect || getDefaultDashboardRoute(res.data.role));
         toast.success(res.message, { id: toastId });
       } else if (res.message) {
         toast.error(res.message, { id: toastId });
-        setSubmitting(false);
       };
     } catch (err: any) {
       toast.error(err.message, { id: toastId });
+    } finally {
       setSubmitting(false);
     }
   };

@@ -63,6 +63,26 @@ export const getAllItems = async (query?: string) => {
     return await res.json();
 };
 
+export const getRentopiaItems = async (query?: string) => {
+    const token = await getCookie("token");
+    if (!token) {
+        return {
+            success: false,
+            message: "Authorization Token Missing! Please Login."
+        };
+    };
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/items/rentopia-items${query? `?${query}` : ""}`, {
+        headers: { Cookie: `token=${token.value}` },
+        credentials: "include",
+        next: {
+            tags: ["RENTOPIA_ITEMS"]
+        }
+    });
+
+    return await res.json();
+};
+
 export const getMyItems = async (query?: string) => {
     const token = await getCookie("token");
     if (!token) {
@@ -113,6 +133,31 @@ export const getSingleItem = async (itemId: string) => {
     return await res.json();
 };
 
+export const editRentopiaItem = async (itemId: string, payload: FormData) => {
+    const token = await getCookie("token");
+    if (!token) {
+        return {
+            success: false,
+            message: "Authorization Token Missing! Please Login."
+        };
+    };
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/items/edit-rentopia-item/${itemId}`, {
+        method: "PATCH",
+        headers: { Cookie: `token=${token.value}` },
+        body: payload,
+        credentials: "include",
+    });
+
+    if (res.ok) {
+        revalidateTag("ITEMS", "max");
+        revalidateTag("RENTOPIA_ITEMS", {expire: 0});
+        revalidateTag(`Item-${itemId}`, {expire: 0});
+    };
+
+    return await res.json();
+};
+
 export const editItem = async (itemId: string, payload: FormData) => {
     const token = await getCookie("token");
     if (!token) {
@@ -131,6 +176,7 @@ export const editItem = async (itemId: string, payload: FormData) => {
 
     if (res.ok) {
         revalidateTag("ITEMS", "max");
+        revalidateTag("MY_ITEMS", {expire: 0});
         revalidateTag(`Item-${itemId}`, {expire: 0});
     };
 

@@ -35,8 +35,8 @@ export const getSideMenu = async (role: UserRole): Promise<ISidebarMenuSection[]
                             icon: <Store className="h-5" />
                         },
                         {
-                            title: "Manage User-Items",
-                            url: "/admin/dashboard/manage-user-items",
+                            title: "User Items",
+                            url: "/admin/dashboard/user-items",
                             icon: <Wrench className="h-5" />
                         },
                     ]

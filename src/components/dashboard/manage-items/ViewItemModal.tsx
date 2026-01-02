@@ -1,5 +1,5 @@
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Current_Status, IItem } from "@/types";
+import { Current_Status, IItem, UserRole } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
@@ -23,6 +23,7 @@ const ViewItemModal = ({ children, item }: IViewItemModalProps) => {
         category,
         current_status,
         owner,
+        ownerRole,
         location,
         pricePerDay
     } = item;
@@ -106,7 +107,9 @@ const ViewItemModal = ({ children, item }: IViewItemModalProps) => {
                 {/* Meta Info */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                     <div className="space-y-2">
-                        <p className="text-muted-foreground">Owner</p>
+                        <p className="text-muted-foreground">
+                            {ownerRole === UserRole.ADMIN ? "Added By" : "Owner"}
+                        </p>
                         <div className="flex flex-col justify-center gap-1">
                             <Image
                                 src={owner.picture || "https://res.cloudinary.com"}
