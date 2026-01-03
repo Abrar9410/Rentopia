@@ -2,7 +2,7 @@
 
 import { UserRole } from "@/types";
 import { ISidebarMenuSection } from "@/types/sideMenu";
-import { Boxes, ChartBarStacked, ChessKing, CircleUser, Crown, Plus, ShoppingCart, Store, Users, Wrench } from "lucide-react";
+import { Boxes, ChartBarStacked, ChessKing, CircleUser, Crown, Plus, ShieldUser, ShoppingCart, Store, Users, Wrench } from "lucide-react";
 
 
 export const getSideMenu = async (role: UserRole): Promise<ISidebarMenuSection[] | []> => {
@@ -49,6 +49,11 @@ export const getSideMenu = async (role: UserRole): Promise<ISidebarMenuSection[]
                             title: "Manage Users",
                             url: "/admin/dashboard/manage-users",
                             icon: <Users className="h-5" />
+                        },
+                        {
+                            title: "Manage Admins",
+                            url: "/admin/dashboard/manage-admins",
+                            icon: <ShieldUser className="h-5" />
                         },
                         {
                             title: "Manage Orders",

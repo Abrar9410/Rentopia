@@ -193,9 +193,9 @@ const RentopiaItemsTable = ({ items }: { items: IItem[] }) => {
                                     <Image
                                         src={item.images[0]}
                                         alt="Thumbnail"
-                                        width={100}
+                                        width={70}
                                         height={70}
-                                        className="w-[100px] h-[70px] mx-auto"
+                                        className="w-[70px] h-[70px] mx-auto"
                                     />
                                 </TableCell>
 

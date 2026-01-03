@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { editItemStatus, removeItem } from "@/actions/item";
+import { deleteUser, updateUser } from "@/actions/user";
 import ConfirmationAlert from "@/components/ConfirmationAlert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,18 +8,17 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { Adv_Booking, Current_Status, IItem } from "@/types";
+import { IsActive, IUser, UserRole } from "@/types";
 import { format } from "date-fns";
-import { Eye, Trash2, MoreHorizontal, ArrowUpDown, ArrowDown, ArrowUp } from "lucide-react";
+import { Trash2, MoreHorizontal, ArrowUpDown, ArrowDown, ArrowUp, ShieldUser } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import ViewItemModal from "../../manage-items/ViewItemModal";
 
 
 
-const UserItemsTable = ({ items }: { items: IItem[] }) => {
+const ManageUsersTable = ({ users }: { users: IUser[] }) => {
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -59,33 +59,64 @@ const UserItemsTable = ({ items }: { items: IItem[] }) => {
         );
     };
 
-    const changeStatus = async (current_status: Current_Status, item: IItem) => {
-        if (current_status === item.current_status) {
+    const changeStatus = async (status: IsActive, user: IUser) => {
+        if (status === user.isActive) {
             return null;
         };
 
-        const res = await editItemStatus(item._id, { current_status });
+        const toastId = toast.loading("Updating Info...");
+        const formData = new FormData();
+        
+        formData.append("data", JSON.stringify({ IsActive: status }));
+        try {
+            const res = await updateUser( user._id, formData );
 
-        if (res.success) {
-            startTransition(() => {
-                router.refresh();
-            });
-        } else {
-            toast.error(res.message || "An error occurred! Please try again.")
-        };
+            if (res.success) {
+                startTransition(() => {
+                    router.refresh();
+                });
+                toast.success(res.message || "Status updated successfully!", { id: toastId });
+            } else {
+                toast.error(res.message || "Error Occurred! Could not update user status.", { id: toastId });
+            };
+        } catch (error: any) {
+            toast.error(error.message || error.data.message || "Error occurred! Could not update status.", { id: toastId });
+        }
+    };
+    
+    const makeAdmin = async (userId: string) => {
+        const toastId = toast.loading("Updating Info...");
+        const formData = new FormData();
+        
+        formData.append("data", JSON.stringify({ role: UserRole.ADMIN }));
+        try {
+            const res = await updateUser( userId, formData );
+
+            if (res.success) {
+                startTransition(() => {
+                    router.refresh();
+                });
+                toast.success(res.message || "User Role updated successfully!", { id: toastId });
+            } else {
+                toast.error(res.message || "Error Occurred! Could not update user role.", { id: toastId });
+            };
+        } catch (error: any) {
+            toast.error(error.message || error.data.message || "Error occurred! Could not update role.", { id: toastId });
+        }
     };
 
-    const handleRemoveItem = async (itemId: string) => {
-        const toastId = toast.loading("Removing Item...");
-        const res = await removeItem(itemId);
+    const handleDeleteUser = async (userId: string) => {
+        const toastId = toast.loading("Deleting User Account...");
+
+        const res = await deleteUser(userId);
 
         if (res.success) {
             startTransition(() => {
                 router.refresh();
             });
-            toast.success(res.message, { id: toastId });
+            toast.success(res.message || "User deleted successfully!", { id: toastId });
         } else {
-            toast.error(res.message || "Error Occurred! Could not remove Item.", { id: toastId });
+            toast.error(res.message || "Error Occurred! Could not delete user account.", { id: toastId });
         };
     };
 
@@ -94,14 +125,14 @@ const UserItemsTable = ({ items }: { items: IItem[] }) => {
             <Table className="text-center [&_th]:text-center [&_td]:text-center [&_th]:font-semibold">
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Thumbnail</TableHead>
+                        <TableHead>Image</TableHead>
                         <TableHead>
                             <p
-                                onClick={() => handleSort("title")}
+                                onClick={() => handleSort("name")}
                                 className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
                             >
-                                Title
-                                {getSortIcon("title")}
+                                Name
+                                {getSortIcon("name")}
                             </p>
                         </TableHead>
                         <TableHead>
@@ -109,186 +140,138 @@ const UserItemsTable = ({ items }: { items: IItem[] }) => {
                                 onClick={() => handleSort("_id")}
                                 className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
                             >
-                                Item ID
+                                User ID
                                 {getSortIcon("_id")}
                             </p>
                         </TableHead>
-                        <TableHead>Description</TableHead>
-                        <TableHead>
-                            <p
-                                onClick={() => handleSort("category")}
-                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
-                            >
-                                Category
-                                {getSortIcon("category")}
-                            </p>
-                        </TableHead>
-                        <TableHead>Owner</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Phone</TableHead>
+                        <TableHead>Address</TableHead>
                         <TableHead>
                             <p
                                 onClick={() => handleSort("createdAt")}
                                 className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
                             >
-                                Added On
+                                Joined On
                                 {getSortIcon("createdAt")}
                             </p>
                         </TableHead>
                         <TableHead>
                             <p
-                                onClick={() => handleSort("pricePerDay")}
+                                onClick={() => handleSort("earnings")}
                                 className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
                             >
-                                Price Per Day
-                                {getSortIcon("pricePerDay")}
+                                Earnings
+                                {getSortIcon("earnings")}
                             </p>
                         </TableHead>
                         <TableHead>
                             <p
-                                onClick={() => handleSort("available")}
+                                onClick={() => handleSort("isVerified")}
                                 className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
                             >
-                                Rentable
-                                {getSortIcon("available")}
+                                Verified
+                                {getSortIcon("isVerified")}
                             </p>
                         </TableHead>
                         <TableHead>
                             <p
-                                onClick={() => handleSort("current_status")}
+                                onClick={() => handleSort("isActive")}
                                 className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
                             >
                                 Status
-                                {getSortIcon("current_status")}
+                                {getSortIcon("isActive")}
                             </p>
                         </TableHead>
-                        <TableHead>Location</TableHead>
-                        <TableHead>Next Bookings</TableHead>
                         <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
 
                 <TableBody>
-                    {items?.length > 0 ? (
-                        items.map((item: IItem) => (
-                            <TableRow key={item._id}>
+                    {users?.length > 0 ? (
+                        users.map((user: IUser) => (
+                            <TableRow key={user._id}>
 
-                                {/* Thumbnail */}
+                                {/* Picture */}
                                 <TableCell>
                                     <Image
-                                        src={item.images[0]}
-                                        alt="Thumbnail"
-                                        width={70}
-                                        height={70}
-                                        className="w-[70px] h-[70px] mx-auto"
+                                        src={user.picture || "https://res.cloudinary.com"}
+                                        alt={user.name}
+                                        width={50}
+                                        height={50}
+                                        className="w-[50px] h-[50px] mx-auto"
                                     />
                                 </TableCell>
 
-                                {/* Title */}
-                                <TableCell>{item.title}</TableCell>
+                                {/* Name */}
+                                <TableCell>{user.name}</TableCell>
 
-                                {/* Item ID */}
-                                <TableCell>{item._id}</TableCell>
+                                {/* User ID */}
+                                <TableCell>{user._id}</TableCell>
 
-                                {/* Description */}
-                                <TableCell className="max-w-lg">{item.description}</TableCell>
+                                {/* Email */}
+                                <TableCell>{user.email}</TableCell>
 
-                                {/* Category */}
-                                <TableCell>{item.category}</TableCell>
+                                {/* Phone */}
+                                <TableCell>{user.phone}</TableCell>
 
-                                {/* Owner */}
-                                <TableCell>
-                                    <p className="text-center">{item.owner.name}</p>
-                                    <p className="text-center text-xs text-muted-foreground">{item.owner._id}</p>
-                                </TableCell>
+                                {/* Address */}
+                                <TableCell>{user.address}</TableCell>
 
-                                {/* Added On */}
-                                <TableCell>{format(item.createdAt, "PP")}</TableCell>
+                                {/* Joined On */}
+                                <TableCell>{format(user.createdAt, "PP")}</TableCell>
 
-                                {/* Price Per Day */}
-                                <TableCell>{item.pricePerDay}</TableCell>
+                                {/* Earnings */}
+                                <TableCell>{user.earnings}</TableCell>
 
-                                {/* Rentable */}
+                                {/* Verified */}
                                 <TableCell>
                                     <div className="flex justify-center items-center gap-2">
                                         {
-                                            item.available ?
+                                            user.isVerified ?
                                                 <span>✅</span> :
                                                 <span>❌</span>
                                         }
                                     </div>
                                 </TableCell>
 
-                                {/* Current Status */}
+                                {/* Active Status */}
                                 <TableCell>
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
                                             <Badge
                                                 className={cn(
-                                                    { "bg-green-500": item.current_status === Current_Status.AVAILABLE },
-                                                    { "bg-orange-500": item.current_status === Current_Status.OCCUPIED },
-                                                    { "bg-gray-500": item.current_status === Current_Status.UNDER_MAINTENANCE },
-                                                    { "bg-yellow-500": item.current_status === Current_Status.FLAGGED },
-                                                    { "bg-red-500": item.current_status === Current_Status.BLOCKED },
+                                                    { "bg-green-500": user.isActive === IsActive.ACTIVE },
+                                                    { "bg-yellow-500": user.isActive === IsActive.INACTIVE },
+                                                    { "bg-red-500": user.isActive === IsActive.BLOCKED },
                                                     "cursor-pointer hover:bg-primary"
                                                 )}
                                             >
-                                                {item.current_status}
+                                                {user.isActive}
                                             </Badge>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="center" className="w-max *:cursor-pointer">
                                             <DropdownMenuItem
                                                 className="hover:bg-primary hover:text-white"
-                                                onClick={() => changeStatus(Current_Status.AVAILABLE, item)}
+                                                onClick={() => changeStatus(IsActive.ACTIVE, user)}
                                             >
-                                                AVAILABLE
+                                                ACTIVE
                                             </DropdownMenuItem>
                                             <DropdownMenuItem
                                                 className="hover:bg-primary hover:text-white"
-                                                onClick={() => changeStatus(Current_Status.OCCUPIED, item)}
+                                                onClick={() => changeStatus(IsActive.INACTIVE, user)}
                                             >
-                                                OCCUPIED
+                                                INACTIVE
                                             </DropdownMenuItem>
                                             <DropdownMenuItem
                                                 className="hover:bg-primary hover:text-white"
-                                                onClick={() => changeStatus(Current_Status.UNDER_MAINTENANCE, item)}
+                                                onClick={() => changeStatus(IsActive.BLOCKED, user)}
                                             >
-                                                UNDER_MAINTENANCE
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem
-                                                className="hover:bg-primary hover:text-white"
-                                                onClick={() => changeStatus(Current_Status.FLAGGED, item)}
-                                            >
-                                                FLAGGED
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem
-                                                className="hover:bg-primary hover:text-white"
-                                                onClick={() => changeStatus(Current_Status.BLOCKED, item)}
-                                            >
-                                                BLOCKED
+                                                BLOCK
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </TableCell>
-
-                                {/* Pick-up Location */}
-                                <TableCell>{item.location}</TableCell>
-
-                                {/* Next Bookings */}
-                                <TableCell>{
-                                    item.adv_bookings.length > 0 ?
-                                        item.adv_bookings.map((booking: Adv_Booking, idx: number) => (
-                                            <p key={booking.startDate.toISOString()}>
-                                                <span>{idx + 1}. </span>
-                                                <span>
-                                                    {
-                                                        format(booking.startDate, "PP")
-                                                        + " to " +
-                                                        format(booking.endDate, "PP")
-                                                    }
-                                                </span>
-                                            </p>
-                                        )) :
-                                        "None"
-                                }</TableCell>
 
                                 {/* Actions */}
                                 <TableCell>
@@ -299,15 +282,18 @@ const UserItemsTable = ({ items }: { items: IItem[] }) => {
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent align="end" className="w-max p-1 space-y-2 *:cursor-pointer">
-                                            <ViewItemModal item={item}>
-                                                <p className="py-1 pl-1 pr-3 rounded-sm text-sm flex items-center gap-4 cursor-pointer hover:bg-accent">
-                                                    <Eye className="h-4 w-4 text-primary" />
-                                                    View
-                                                </p>
-                                            </ViewItemModal>
                                             <ConfirmationAlert
-                                                onConfirm={() => handleRemoveItem(item._id)}
-                                                dialogDescription="This Item will be removed from your Inventory!"
+                                                onConfirm={() => makeAdmin(user._id)}
+                                                dialogDescription="This User will become an Admin!"
+                                            >
+                                                <p className="py-1 pl-1 pr-3 rounded-sm text-sm flex items-center gap-4 cursor-pointer hover:bg-accent">
+                                                    <ShieldUser className="h-4 w-4 text-primary" />
+                                                    Make Admin
+                                                </p>
+                                            </ConfirmationAlert>
+                                            <ConfirmationAlert
+                                                onConfirm={() => handleDeleteUser(user._id)}
+                                                dialogDescription="This User Account will be deleted permanently!"
                                             >
                                                 <p className="py-1 pl-1 pr-3 rounded-sm text-sm flex items-center gap-4 cursor-pointer hover:bg-accent">
                                                     <Trash2 className="h-4 w-4 text-red-500" />
@@ -321,7 +307,7 @@ const UserItemsTable = ({ items }: { items: IItem[] }) => {
                         ))
                     ) : (
                         <TableRow>
-                            <TableCell colSpan={12} className="text-center">
+                            <TableCell colSpan={11} className="text-center">
                                 No Item Found
                             </TableCell>
                         </TableRow>
@@ -332,4 +318,4 @@ const UserItemsTable = ({ items }: { items: IItem[] }) => {
     );
 };
 
-export default UserItemsTable;
+export default ManageUsersTable;

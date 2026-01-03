@@ -27,8 +27,8 @@ export interface IUser {
     isVerified: boolean;
     role: UserRole;
     auths: IAuthProvider[];
-    createdAt?: Date;
-    updatedAt?: Date;
+    createdAt: Date;
+    updatedAt: Date;
 };
 
 export enum Category {

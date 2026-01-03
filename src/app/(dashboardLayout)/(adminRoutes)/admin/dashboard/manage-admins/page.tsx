@@ -1,5 +1,5 @@
 import { getAllUsers } from "@/actions/user";
-import ManageUsersTable from "@/components/dashboard/admin/manage-users-page/ManageUsersTable";
+import ManageAdminsTable from "@/components/dashboard/admin/manage-admins-page/ManageAdminsTable";
 import { TableSkeleton } from "@/components/dashboard/TableSkeleton";
 import PageHeader from "@/components/PageHeader";
 import Pagination from "@/components/Pagination";
@@ -13,16 +13,16 @@ import { Suspense } from "react";
 
 
 export const metadata: Metadata = {
-    title: "Manage Users | Rentopia",
-    description: "A page for Admin to manage all the users of Rentopia."
+    title: "Manage Admins | Rentopia",
+    description: "A page for Admin to manage all the admins of Rentopia."
 };
 
 
-const ManageUsersPage = async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) => {
+const ManageAdminsPage = async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) => {
 
     const searchParamsObj = await searchParams;
     const queryString = queryStringFormatter(searchParamsObj);
-    const { data: users, meta } = await getAllUsers(`role=USER&${queryString}`);
+    const { data: users, meta } = await getAllUsers(`role=ADMIN&${queryString}`);
 
     return (
         <>
@@ -43,12 +43,12 @@ const ManageUsersPage = async ({ searchParams }: { searchParams: Promise<{ [key:
                 />
                 <RefreshButton />
             </div>
-            <Suspense fallback={<TableSkeleton columns={11}/>}>
-                <ManageUsersTable users={users} />
+            <Suspense fallback={<TableSkeleton columns={10}/>}>
+                <ManageAdminsTable users={users} />
             </Suspense>
             <Pagination currentPage={meta.page} totalPages={meta.totalPages} limit={meta.limit} />
         </>
     );
 };
 
-export default ManageUsersPage;
+export default ManageAdminsPage;
