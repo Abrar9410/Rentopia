@@ -36,7 +36,7 @@ const RefreshButton = ({
             <RefreshCcw className={`h-4 w-4 ${isPending ? "animate-spin" : ""}`} />
             {
                 showLabel &&
-                <span>{isPending ? "Refreshing..." : "Refresh"}</span>
+                <span>{isPending ? "Resetting..." : "Reset"}</span>
             }
         </Button>
     );

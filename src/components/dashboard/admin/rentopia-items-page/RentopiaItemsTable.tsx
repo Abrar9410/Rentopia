@@ -140,7 +140,15 @@ const RentopiaItemsTable = ({ items }: { items: IItem[] }) => {
                                 {getSortIcon("category")}
                             </p>
                         </TableHead>
-                        <TableHead>Added By</TableHead>
+                        <TableHead>
+                            <p
+                                onClick={() => handleSort("owner")}
+                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
+                            >
+                                Added By
+                                {getSortIcon("owner")}
+                            </p>
+                        </TableHead>
                         <TableHead>
                             <p
                                 onClick={() => handleSort("createdAt")}
