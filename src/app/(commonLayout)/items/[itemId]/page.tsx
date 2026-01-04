@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { getSingleAvailableItem } from "@/actions/item";
 import { Current_Status, UserRole } from "@/types";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 
 export const generateMetadata = async ({ params }: { params: Promise<{ itemId: string }> }) => {
@@ -22,7 +23,15 @@ export const generateMetadata = async ({ params }: { params: Promise<{ itemId: s
 const SingleItemPage = async ({ params }: { params: Promise<{ itemId: string }> }) => {
 
     const { itemId } = await params;
-    const { data: item } = await getSingleAvailableItem(itemId);
+    const { data: item, message } = await getSingleAvailableItem(itemId);
+
+    if (!item) {
+        return (
+            <p className="w-11/12 md:w-10/11 xl:w-9/12 mx-auto mt-8 text-xl font-semibold text-red-500 text-center">
+                {message}
+            </p>
+        );
+    };
 
     const {
         title,
@@ -37,10 +46,9 @@ const SingleItemPage = async ({ params }: { params: Promise<{ itemId: string }> 
         location,
     } = item;
 
-    const isAvailable = current_status === "AVAILABLE";
 
     return (
-        <main className="container mx-auto px-4 py-8">
+        <main className="w-11/12 md:w-10/12 xl:w-9/12 mx-auto px-4 py-8">
             <div className="grid gap-8 lg:grid-cols-2">
                 {/* Image Section */}
                 <div className="flex flex-col gap-4">
@@ -101,8 +109,8 @@ const SingleItemPage = async ({ params }: { params: Promise<{ itemId: string }> 
                     </div>
 
                     {/* CTA */}
-                    <Button size="lg" disabled={!isAvailable}>
-                        {isAvailable ? "Proceed to Rent" : "Currently Unavailable"}
+                    <Button size="lg" asChild>
+                        <Link href={`/order/${itemId}`}>Proceed to Rent</Link>
                     </Button>
                 </div>
             </div>

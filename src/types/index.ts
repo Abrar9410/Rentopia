@@ -27,8 +27,8 @@ export interface IUser {
     isVerified: boolean;
     role: UserRole;
     auths: IAuthProvider[];
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 };
 
 export enum Category {
@@ -50,8 +50,8 @@ export enum Current_Status {
 };
 
 export interface Adv_Booking {
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
 };
 
 export interface IItem {
@@ -68,7 +68,50 @@ export interface IItem {
     ownerRole: UserRole;
     location: string;
     adv_bookings: Adv_Booking[] | [];
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     deleteImages?: string[];
+};
+
+export enum ORDER_STATUS {
+    // REQUESTED = "REQUESTED",
+    PENDING = "PENDING",
+    CONFIRMED = "CONFIRMED",
+    CANCELLED = "CANCELLED",
+    ONGOING = "ONGOING",
+    COMPLETED = "COMPLETED",
+    FAILED = "FAILED"
+};
+
+export interface IOrder {
+    _id?: string;
+    renter: Partial<IUser>; 
+    item: Partial<IItem>;
+    owner: Partial<IUser>;
+    payment: Partial<IPayment>;
+    startDate: string;
+    endDate: string;
+    status: ORDER_STATUS;
+    ownerEarning: number;
+    platformFee: number;
+    createdAt: string;
+    updatedAt: string;
+};
+
+export enum PAYMENT_STATUS {
+    PAID = "PAID",
+    UNPAID = "UNPAID",
+    CANCELLED = "CANCELLED",
+    FAILED = "FAILED",
+    REFUNDED = "REFUNDED"
+};
+
+export interface IPayment {
+    _id: string;
+    order: Partial<IOrder>;
+    transactionId: string;
+    amount: number;
+    paymentGatewayData: unknown;
+    invoiceUrl?: string
+    status: PAYMENT_STATUS
 };

@@ -20,7 +20,7 @@ export const adminProtectedRoutes: RouteConfig = {
 }
 
 export const userProtectedRoutes: RouteConfig = {
-    patterns: [/^\/dashboard/], // Routes starting with /dashboard/*
+    patterns: [/^\/dashboard/, /^\/order/], // Routes starting with /dashboard/*
     exact: [], // "/dashboard"
 }
 

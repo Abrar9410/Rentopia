@@ -284,7 +284,7 @@ const UserItemsTable = ({ items }: { items: IItem[] }) => {
                                 <TableCell>{
                                     item.adv_bookings.length > 0 ?
                                         item.adv_bookings.map((booking: Adv_Booking, idx: number) => (
-                                            <p key={booking.startDate.toISOString()}>
+                                            <p key={booking.startDate}>
                                                 <span>{idx + 1}. </span>
                                                 <span>
                                                     {
