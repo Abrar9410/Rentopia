@@ -80,13 +80,12 @@ export enum ORDER_STATUS {
     CANCELLED = "CANCELLED",
     ONGOING = "ONGOING",
     COMPLETED = "COMPLETED",
-    FAILED = "FAILED"
 };
 
 export interface IOrder {
-    _id?: string;
+    _id: string;
     renter: Partial<IUser>; 
-    item: Partial<IItem>;
+    item: IItem;
     owner: Partial<IUser>;
     payment: Partial<IPayment>;
     startDate: string;

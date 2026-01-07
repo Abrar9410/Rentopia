@@ -33,6 +33,9 @@ const PaymentSuccessPage = async ({ searchParams }: { searchParams: Promise<{ [k
                     <p className="text-sm text-muted-foreground">
                         Transaction ID: {transactionId}
                     </p>
+                    <p className="text-lg text-primary">
+                        Please Go to your Dashboard {'->'} &lsquo;My Orders&rsquo; for the owner&apos;s contact details.
+                    </p>
                 </CardHeader>
 
                 <CardContent className="space-y-6">

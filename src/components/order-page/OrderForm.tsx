@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useTransition } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { differenceInCalendarDays } from "date-fns";
@@ -9,6 +9,7 @@ import type { DateRange } from "react-day-picker";
 import ConfirmationAlert from "../ConfirmationAlert";
 import { toast } from "sonner";
 import { placeOrder } from "@/actions/order";
+import { useRouter } from "next/navigation";
 
 interface OrderFormProps {
     itemId: string;
@@ -26,6 +27,9 @@ const OrderForm = ({
 }: OrderFormProps) => {
 
     const [range, setRange] = useState<DateRange | undefined>();
+    const [submitting, setSubmitting] = useState(false);
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter();
 
     // 🔒 Disabled ranges
     const disabledRanges: DateRange[] = useMemo(
@@ -56,6 +60,7 @@ const OrderForm = ({
         if (!range || !range.from) {
             return;
         };
+        setSubmitting(true);
         const toastId = toast.loading("Placing your order...");
         const startDate = range.from;
         const endDate = range.to ?? range.from;
@@ -72,12 +77,17 @@ const OrderForm = ({
             if (res.success) {
                 toast.success(res.message || "Order placed successfully!", { id: toastId });
                 setRange(undefined);
+                startTransition(() => {
+                    router.refresh();
+                });
                 window.open(res.data.paymentUrl);
             } else {
                 toast.error(res.message || "Failed to place order. Please try again.", { id: toastId });
             };
         } catch (error: any) {
             toast.error(error.message || error.data.message || "Failed to place order. Please try again.", { id: toastId });
+        } finally {
+            setSubmitting(false);
         };
     };
 
@@ -132,10 +142,10 @@ const OrderForm = ({
                 onConfirm={handlePlaceOrder}
             >
                 <Button
-                    disabled={!range || !range?.from}
+                    disabled={!range || !range?.from || submitting || isPending}
                     className="w-full"
                 >
-                    Place Order
+                    {submitting ? "Placing Order..." : "Place Order"}
                 </Button>
             </ConfirmationAlert>
         </div>

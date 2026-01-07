@@ -27,6 +27,7 @@ export const placeOrder = async (payload: { item: string, startDate: Date, endDa
     revalidateTag("ORDERS", {expire: 0});
     revalidateTag("MY_ORDERS", {expire: 0});
     revalidateTag("AVAILABLE_ITEMS", {expire: 0});
+    revalidateTag(`Item-${payload.item}`, {expire: 0});
      
     return await res.json();
 };
