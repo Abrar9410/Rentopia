@@ -17,7 +17,7 @@ import { toast } from "sonner";
 
 
 
-const CustomerOrdersTable = ({ orders }: { orders: IOrder[] }) => {
+const ManageOrdersTable = ({ orders }: { orders: IOrder[] }) => {
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -59,7 +59,7 @@ const CustomerOrdersTable = ({ orders }: { orders: IOrder[] }) => {
     };
 
     const changeStatus = async (status: ORDER_STATUS, order: IOrder) => {
-        if (status === order.status || order.status !== ORDER_STATUS.ONGOING) {
+        if (status === order.status) {
             return null;
         };
 
@@ -95,6 +95,8 @@ const CustomerOrdersTable = ({ orders }: { orders: IOrder[] }) => {
                         </TableHead>
                         <TableHead>Item</TableHead>
                         <TableHead>Pickup Location</TableHead>
+                        <TableHead>Owner</TableHead>
+                        <TableHead>Owner Contact</TableHead>
                         <TableHead>Renter</TableHead>
                         <TableHead>Renter Contact</TableHead>
                         <TableHead>
@@ -167,6 +169,26 @@ const CustomerOrdersTable = ({ orders }: { orders: IOrder[] }) => {
                                 {/* Pick-up Location */}
                                 <TableCell>{order.item.location}</TableCell>
 
+                                {/* Owner */}
+                                <TableCell className="flex flex-col items-center justify-center gap-2">
+                                            <Image
+                                                src={order.owner.picture || "https://res.cloudinary.com"}
+                                                alt={order.owner.name as string}
+                                                width={28}
+                                                height={28}
+                                                className="w-7 h-7 mx-auto"
+                                            />
+                                            <p>{order.owner.name}</p>
+                                            <p>({order.owner.role})</p>
+                                </TableCell>
+
+                                {/* Owner Contact */}
+                                <TableCell>
+                                    <p>Email: {order.owner.email}</p>
+                                    <p>Phone: {order.owner.phone}</p>
+                                    <p>Address: {order.owner.address}</p>
+                                </TableCell>
+
                                 {/* Renter */}
                                 <TableCell className="flex flex-col items-center justify-center gap-2">
                                             <Image
@@ -176,23 +198,14 @@ const CustomerOrdersTable = ({ orders }: { orders: IOrder[] }) => {
                                                 height={28}
                                                 className="w-7 h-7 mx-auto"
                                             />
-                                            <p>{order.owner.name}</p>
+                                            <p>{order.renter.name}</p>
                                 </TableCell>
 
                                 {/* Renter Contact */}
                                 <TableCell>
-                                    <p>
-                                        Email: {
-                                            (order.status === ORDER_STATUS.ONGOING || order.status === ORDER_STATUS.CONFIRMED) ?
-                                                order.renter.email : "******"
-                                        }
-                                    </p>
-                                    <p>
-                                        Phone: {
-                                            (order.status === ORDER_STATUS.ONGOING || order.status === ORDER_STATUS.CONFIRMED) ?
-                                                order.renter.phone : "******"
-                                        }
-                                    </p>
+                                    <p>Email: {order.renter.email}</p>
+                                    <p>Phone: {order.renter.phone}</p>
+                                    <p>Address: {order.renter.address}</p>
                                 </TableCell>
 
                                 {/* Order Start */}
@@ -221,9 +234,33 @@ const CustomerOrdersTable = ({ orders }: { orders: IOrder[] }) => {
                                         <DropdownMenuContent align="center" className="w-max *:cursor-pointer">
                                             <DropdownMenuItem
                                                 className="hover:bg-primary hover:text-white"
+                                                onClick={() => changeStatus(ORDER_STATUS.CONFIRMED, order)}
+                                            >
+                                                CONFIRMED
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                className="hover:bg-primary hover:text-white"
+                                                onClick={() => changeStatus(ORDER_STATUS.CANCELLED, order)}
+                                            >
+                                                CANCELLED
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                className="hover:bg-primary hover:text-white"
+                                                onClick={() => changeStatus(ORDER_STATUS.ONGOING, order)}
+                                            >
+                                                ONGOING
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                className="hover:bg-primary hover:text-white"
                                                 onClick={() => changeStatus(ORDER_STATUS.COMPLETED, order)}
                                             >
                                                 COMPLETED
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                className="hover:bg-primary hover:text-white"
+                                                onClick={() => changeStatus(ORDER_STATUS.PENDING, order)}
+                                            >
+                                                PENDING
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
@@ -287,4 +324,4 @@ const CustomerOrdersTable = ({ orders }: { orders: IOrder[] }) => {
     );
 };
 
-export default CustomerOrdersTable;
+export default ManageOrdersTable;

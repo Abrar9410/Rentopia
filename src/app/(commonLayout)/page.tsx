@@ -1,4 +1,6 @@
 import HeroBanner from "@/components/homepage/HeroBanner";
+import HowItWorks from "@/components/homepage/HowItWorks";
+import PopularCategories from "@/components/homepage/PopularCategories";
 import { Metadata } from "next";
 
 
@@ -12,6 +14,8 @@ export default function Homepage() {
   return (
     <>
       <HeroBanner />
+      <PopularCategories />
+      <HowItWorks />
     </>
   );
 }

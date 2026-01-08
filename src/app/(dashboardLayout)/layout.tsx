@@ -22,7 +22,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                     </div>
                     <ThemeToggler />
                 </header>
-                <div className="flex flex-1 flex-col w-11/12 mx-auto p-4 sm:p-6">
+                <div className="flex flex-1 flex-col w-11/12 mx-auto">
                     {children}
                 </div>
             </SidebarInset>
