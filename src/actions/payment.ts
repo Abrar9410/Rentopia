@@ -22,7 +22,7 @@ export const initiatePayment = async (orderId: string) => {
     if (!res.ok) {
         return {
             success: false,
-            message: "An Error Occurred! Please try again.",
+            message: "An Error Occurred! Please try again. If the issue persists, contact support.",
             data: null
         };
     };

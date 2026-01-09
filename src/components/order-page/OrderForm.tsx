@@ -80,7 +80,7 @@ const OrderForm = ({
                 startTransition(() => {
                     router.refresh();
                 });
-                window.open(res.data.paymentUrl);
+                window.open(res.data.paymentUrl, "_blank");
             } else {
                 toast.error(res.message || "Failed to place order. Please try again.", { id: toastId });
             };
