@@ -1,3 +1,4 @@
+import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/Navbar";
 
 
@@ -8,6 +9,7 @@ const commonLayout = ({children}: {children: React.ReactNode}) => {
             <div className="flex-1">
                 {children}
             </div>
+            <Footer />
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Logo from "./Logo";
 
 
 const Loading = () => {
@@ -7,7 +7,7 @@ const Loading = () => {
             {/* Logo / Brand Mark */}
             <div className="relative flex items-center justify-center">
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center animate-pulse">
-                    <Image src="/Rentopia-logo.PNG" alt="Logo" width={40} height={40} priority className="w-10 h-10" />
+                    <Logo width={40} height={40} className="w-10 h-10"/>
                 </div>
 
                 {/* Spinner */}

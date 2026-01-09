@@ -21,6 +21,8 @@ import ConfirmationAlert from "../ConfirmationAlert";
 import { toast } from "sonner";
 import { logout } from "@/actions/auth";
 import { IUser } from "@/types";
+import NavAuthButtons from "./NavAuthButtons";
+import Logo from "../Logo";
 
 
 
@@ -28,7 +30,8 @@ const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
   { href: "/items", label: "Browse Items", role: "PUBLIC" },
   { href: "/about", label: "About", role: "PUBLIC" },
-  { href: "/contact", label: "Contact", role: "PUBLIC" }
+  { href: "/contact", label: "Contact", role: "PUBLIC" },
+  { href: "/faq", label: "FAQ", role: "PUBLIC" }
 ];
 
 export default function NavbarContent({ user }: { user: Partial<IUser> | undefined | null }) {
@@ -52,7 +55,7 @@ export default function NavbarContent({ user }: { user: Partial<IUser> | undefin
     <div className="w-11/12 md:w-10/12 xl:w-9/12 mx-auto flex h-16 justify-between gap-4">
       {/* Left side */}
       <div className="flex items-center gap-2">
-        <div className="flex items-center md:hidden">
+        <div className="flex items-center min-[820px]:hidden">
           {/* Mobile menu trigger */}
           <Popover>
             <PopoverTrigger asChild>
@@ -84,9 +87,9 @@ export default function NavbarContent({ user }: { user: Partial<IUser> | undefin
                 </svg>
               </Button>
             </PopoverTrigger>
-            <PopoverContent align="start" className="w-36 p-1 md:hidden">
+            <PopoverContent align="start" className="w-36 p-1 min-[820px]:hidden">
               <NavigationMenu className="max-w-none *:w-full">
-                <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
+                <NavigationMenuList className="flex-col items-start gap-0">
                   {navigationLinks.map((link, index) => (
                     link.role === 'PUBLIC' &&
                     <NavigationMenuItem key={index} className="w-full">
@@ -105,15 +108,15 @@ export default function NavbarContent({ user }: { user: Partial<IUser> | undefin
           </Popover>
         </div>
         <Link href="/" className="flex items-center">
-          <Image src="/Rentopia-logo.PNG" alt="Logo" width={20} height={20} priority className="w-5 h-5" />
-          <div className="w-max text-xl font-bold text-primary dark:text-blue-600">entopia</div>
+          <Logo />
+          <span className="w-max text-xl font-bold text-primary dark:text-blue-600">entopia</span>
         </Link>
       </div>
       {/* Main nav */}
       <div>
         {/* Navigation menu */}
-        <NavigationMenu className="h-full *:h-full max-md:hidden">
-          <NavigationMenuList className="h-full gap-1 lg:gap-2">
+        <NavigationMenu className="h-full *:h-full max-[820px]:hidden">
+          <NavigationMenuList className="h-full lg:gap-2">
             {navigationLinks.map((link, index) => (
               link.role === "PUBLIC" &&
               <NavigationMenuItem key={index} className="h-full">
@@ -134,14 +137,7 @@ export default function NavbarContent({ user }: { user: Partial<IUser> | undefin
         <ThemeToggler />
         {
           !user?.email ?
-            <>
-              <Button variant="outline" onClick={() => router.push("/login")}>
-                LOGIN
-              </Button>
-              <Button onClick={() => router.push("/register")}>
-                SIGN UP
-              </Button>
-            </> :
+            <NavAuthButtons />:
             <Popover>
               <PopoverTrigger asChild>
                 <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary cursor-pointer hover:animate-pulse">
