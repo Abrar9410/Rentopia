@@ -79,211 +79,209 @@ const CustomerOrdersTable = ({ orders }: { orders: IOrder[] }) => {
 
 
     return (
-        <div className="overflow-x-auto">
-            <Table className="text-center [&_th]:text-center [&_td]:text-center [&_th]:font-semibold">
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Order ID</TableHead>
-                        <TableHead>
-                            <p
-                                onClick={() => handleSort("createdAt")}
-                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
-                            >
-                                Order Date
-                                {getSortIcon("createdAt")}
-                            </p>
-                        </TableHead>
-                        <TableHead>Item</TableHead>
-                        <TableHead>Pickup Location</TableHead>
-                        <TableHead>Renter</TableHead>
-                        <TableHead>Renter Contact</TableHead>
-                        <TableHead>
-                            <p
-                                onClick={() => handleSort("startDate")}
-                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
-                            >
-                                Order start
-                                {getSortIcon("startDate")}
-                            </p>
-                        </TableHead>
-                        <TableHead>
-                            <p
-                                onClick={() => handleSort("endDate")}
-                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
-                            >
-                                Order end
-                                {getSortIcon("endDate")}
-                            </p>
-                        </TableHead>
-                        <TableHead>
-                            <p
-                                onClick={() => handleSort("status")}
-                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
-                            >
-                                Status
-                                {getSortIcon("status")}
-                            </p>
-                        </TableHead>
-                        <TableHead>Transaction ID</TableHead>
-                        <TableHead>
-                            <p
-                                onClick={() => handleSort("ownerEarning")}
-                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
-                            >
-                                Amount
-                                {getSortIcon("ownerEarning")}
-                            </p>
-                        </TableHead>
-                        <TableHead>Payment Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                    </TableRow>
-                </TableHeader>
+        <Table className="text-center [&_th]:text-center [&_td]:text-center [&_th]:font-semibold">
+            <TableHeader>
+                <TableRow>
+                    <TableHead>Order ID</TableHead>
+                    <TableHead>
+                        <p
+                            onClick={() => handleSort("createdAt")}
+                            className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
+                        >
+                            Order Date
+                            {getSortIcon("createdAt")}
+                        </p>
+                    </TableHead>
+                    <TableHead>Item</TableHead>
+                    <TableHead>Pickup Location</TableHead>
+                    <TableHead>Renter</TableHead>
+                    <TableHead>Renter Contact</TableHead>
+                    <TableHead>
+                        <p
+                            onClick={() => handleSort("startDate")}
+                            className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
+                        >
+                            Order start
+                            {getSortIcon("startDate")}
+                        </p>
+                    </TableHead>
+                    <TableHead>
+                        <p
+                            onClick={() => handleSort("endDate")}
+                            className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
+                        >
+                            Order end
+                            {getSortIcon("endDate")}
+                        </p>
+                    </TableHead>
+                    <TableHead>
+                        <p
+                            onClick={() => handleSort("status")}
+                            className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
+                        >
+                            Status
+                            {getSortIcon("status")}
+                        </p>
+                    </TableHead>
+                    <TableHead>Transaction ID</TableHead>
+                    <TableHead>
+                        <p
+                            onClick={() => handleSort("ownerEarning")}
+                            className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
+                        >
+                            Amount
+                            {getSortIcon("ownerEarning")}
+                        </p>
+                    </TableHead>
+                    <TableHead>Payment Status</TableHead>
+                    <TableHead>Actions</TableHead>
+                </TableRow>
+            </TableHeader>
 
-                <TableBody>
-                    {orders?.length > 0 ? (
-                        orders.map((order: IOrder) => (
-                            <TableRow key={order._id}>
-                                {/* Order ID */}
-                                <TableCell>{order._id}</TableCell>
+            <TableBody>
+                {orders?.length > 0 ? (
+                    orders.map((order: IOrder) => (
+                        <TableRow key={order._id}>
+                            {/* Order ID */}
+                            <TableCell>{order._id}</TableCell>
 
-                                {/* Order Date */}
-                                <TableCell>{format(order.createdAt, "PP")}</TableCell>
+                            {/* Order Date */}
+                            <TableCell>{format(order.createdAt, "PP")}</TableCell>
 
-                                {/* Item */}
-                                <TableCell>
-                                    <div className="flex gap-1">
-                                        <Image
-                                            src={order.item.images[0] as string}
-                                            alt="Thumbnail"
-                                            width={40}
-                                            height={40}
-                                            className="w-10 h-10 mx-auto"
-                                        />
-                                        <p>{order.item.title}</p>
-                                    </div>
-                                    <p>{order.item._id}</p>
-                                </TableCell>
+                            {/* Item */}
+                            <TableCell>
+                                <div className="flex gap-1">
+                                    <Image
+                                        src={order.item.images[0] as string}
+                                        alt="Thumbnail"
+                                        width={40}
+                                        height={40}
+                                        className="w-10 h-10 mx-auto"
+                                    />
+                                    <p>{order.item.title}</p>
+                                </div>
+                                <p>{order.item._id}</p>
+                            </TableCell>
 
-                                {/* Pick-up Location */}
-                                <TableCell>{order.item.location}</TableCell>
+                            {/* Pick-up Location */}
+                            <TableCell>{order.item.location}</TableCell>
 
-                                {/* Renter */}
-                                <TableCell className="flex flex-col items-center justify-center gap-2">
-                                            <Image
-                                                src={order.renter.picture || "https://res.cloudinary.com"}
-                                                alt={order.owner.name as string}
-                                                width={28}
-                                                height={28}
-                                                className="w-7 h-7 mx-auto"
-                                            />
-                                            <p>{order.owner.name}</p>
-                                </TableCell>
+                            {/* Renter */}
+                            <TableCell className="flex flex-col items-center justify-center gap-2">
+                                <Image
+                                    src={order.renter.picture || "https://res.cloudinary.com"}
+                                    alt={order.owner.name as string}
+                                    width={28}
+                                    height={28}
+                                    className="w-7 h-7 mx-auto"
+                                />
+                                <p>{order.owner.name}</p>
+                            </TableCell>
 
-                                {/* Renter Contact */}
-                                <TableCell>
-                                    <p>
-                                        Email: {
-                                            (order.status === ORDER_STATUS.ONGOING || order.status === ORDER_STATUS.CONFIRMED) ?
-                                                order.renter.email : "******"
+                            {/* Renter Contact */}
+                            <TableCell>
+                                <p>
+                                    Email: {
+                                        (order.status === ORDER_STATUS.ONGOING || order.status === ORDER_STATUS.CONFIRMED) ?
+                                            order.renter.email : "******"
+                                    }
+                                </p>
+                                <p>
+                                    Phone: {
+                                        (order.status === ORDER_STATUS.ONGOING || order.status === ORDER_STATUS.CONFIRMED) ?
+                                            order.renter.phone : "******"
+                                    }
+                                </p>
+                            </TableCell>
+
+                            {/* Order Start */}
+                            <TableCell>{format(order.startDate, "PP")}</TableCell>
+
+                            {/* Order End */}
+                            <TableCell>{format(order.endDate, "PP")}</TableCell>
+
+                            {/* Status */}
+                            <TableCell>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Badge
+                                            className={cn(
+                                                { "bg-green-500": order.status === ORDER_STATUS.CONFIRMED },
+                                                { "bg-primary": order.status === ORDER_STATUS.ONGOING },
+                                                { "bg-gray-500": order.status === ORDER_STATUS.COMPLETED },
+                                                { "bg-yellow-500": order.status === ORDER_STATUS.PENDING },
+                                                { "bg-red-500": order.status === ORDER_STATUS.CANCELLED },
+                                                "cursor-pointer hover:bg-primary"
+                                            )}
+                                        >
+                                            {order.status}
+                                        </Badge>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="center" className="w-max *:cursor-pointer">
+                                        <DropdownMenuItem
+                                            className="hover:bg-primary hover:text-white"
+                                            onClick={() => changeStatus(ORDER_STATUS.COMPLETED, order)}
+                                        >
+                                            COMPLETED
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </TableCell>
+
+                            {/* Transaction ID */}
+                            <TableCell>{order.payment.transactionId}</TableCell>
+
+                            {/* Amount */}
+                            <TableCell>{order.payment.amount}</TableCell>
+
+                            {/* Payment Status */}
+                            <TableCell>{
+                                <Badge
+                                    className={cn(
+                                        { "bg-green-500": order.payment.status === PAYMENT_STATUS.PAID },
+                                        { "bg-yellow-500": order.payment.status === PAYMENT_STATUS.UNPAID },
+                                        { "bg-orange-500": order.payment.status === PAYMENT_STATUS.CANCELLED },
+                                        { "bg-red-500": order.payment.status === PAYMENT_STATUS.FAILED },
+                                        { "bg-primary": order.payment.status === PAYMENT_STATUS.REFUNDED }
+                                    )}
+                                >
+                                    {order.payment.status}
+                                </Badge>
+                            }</TableCell>
+
+                            {/* Actions */}
+                            <TableCell>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button variant="ghost" size="icon">
+                                            <MoreHorizontal className="h-4 w-4" />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent align="end" className="w-max p-1 space-y-2 *:cursor-pointer">
+                                        {
+                                            (order.payment.status === PAYMENT_STATUS.PAID) && (
+                                                <Link href={order.payment.invoiceUrl as string} target="_blank">
+                                                    <p className="py-1 pl-1 pr-3 rounded-sm text-sm flex items-center gap-4 cursor-pointer hover:bg-accent">
+                                                        <Eye className="h-4 w-4 text-primary" />
+                                                        View Invoice
+                                                    </p>
+                                                </Link>
+                                            )
                                         }
-                                    </p>
-                                    <p>
-                                        Phone: {
-                                            (order.status === ORDER_STATUS.ONGOING || order.status === ORDER_STATUS.CONFIRMED) ?
-                                                order.renter.phone : "******"
-                                        }
-                                    </p>
-                                </TableCell>
-
-                                {/* Order Start */}
-                                <TableCell>{format(order.startDate, "PP")}</TableCell>
-
-                                {/* Order End */}
-                                <TableCell>{format(order.endDate, "PP")}</TableCell>
-
-                                {/* Status */}
-                                <TableCell>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Badge
-                                                className={cn(
-                                                    { "bg-green-500": order.status === ORDER_STATUS.CONFIRMED },
-                                                    { "bg-primary": order.status === ORDER_STATUS.ONGOING },
-                                                    { "bg-gray-500": order.status === ORDER_STATUS.COMPLETED },
-                                                    { "bg-yellow-500": order.status === ORDER_STATUS.PENDING },
-                                                    { "bg-red-500": order.status === ORDER_STATUS.CANCELLED },
-                                                    "cursor-pointer hover:bg-primary"
-                                                )}
-                                            >
-                                                {order.status}
-                                            </Badge>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="center" className="w-max *:cursor-pointer">
-                                            <DropdownMenuItem
-                                                className="hover:bg-primary hover:text-white"
-                                                onClick={() => changeStatus(ORDER_STATUS.COMPLETED, order)}
-                                            >
-                                                COMPLETED
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-
-                                {/* Transaction ID */}
-                                <TableCell>{order.payment.transactionId}</TableCell>
-
-                                {/* Amount */}
-                                <TableCell>{order.payment.amount}</TableCell>
-
-                                {/* Payment Status */}
-                                <TableCell>{
-                                    <Badge
-                                        className={cn(
-                                            { "bg-green-500": order.payment.status === PAYMENT_STATUS.PAID },
-                                            { "bg-yellow-500": order.payment.status === PAYMENT_STATUS.UNPAID },
-                                            { "bg-orange-500": order.payment.status === PAYMENT_STATUS.CANCELLED },
-                                            { "bg-red-500": order.payment.status === PAYMENT_STATUS.FAILED },
-                                            { "bg-primary": order.payment.status === PAYMENT_STATUS.REFUNDED }
-                                        )}
-                                    >
-                                        {order.payment.status}
-                                    </Badge>
-                                }</TableCell>
-
-                                {/* Actions */}
-                                <TableCell>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <Button variant="ghost" size="icon">
-                                                <MoreHorizontal className="h-4 w-4" />
-                                            </Button>
-                                        </PopoverTrigger>
-                                        <PopoverContent align="end" className="w-max p-1 space-y-2 *:cursor-pointer">
-                                            {
-                                                (order.payment.status === PAYMENT_STATUS.PAID) && (
-                                                    <Link href={order.payment.invoiceUrl as string} target="_blank">
-                                                        <p className="py-1 pl-1 pr-3 rounded-sm text-sm flex items-center gap-4 cursor-pointer hover:bg-accent">
-                                                            <Eye className="h-4 w-4 text-primary" />
-                                                            View Invoice
-                                                        </p>
-                                                    </Link>
-                                                )
-                                            }
-                                        </PopoverContent>
-                                    </Popover>
-                                </TableCell>
-                            </TableRow>
-                        ))
-                    ) : (
-                        <TableRow>
-                            <TableCell colSpan={12} className="text-center">
-                                No Item Found
+                                    </PopoverContent>
+                                </Popover>
                             </TableCell>
                         </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-        </div>
+                    ))
+                ) : (
+                    <TableRow>
+                        <TableCell colSpan={12} className="text-center">
+                            No Item Found
+                        </TableCell>
+                    </TableRow>
+                )}
+            </TableBody>
+        </Table>
     );
 };
 

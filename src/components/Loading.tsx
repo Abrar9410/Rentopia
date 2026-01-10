@@ -18,7 +18,7 @@ const Loading = () => {
             <div className="mt-6 text-center space-y-1">
                 <p className="text-lg font-medium">Rentopia</p>
                 <p className="text-sm text-muted-foreground">
-                    Finding the perfect rental for you…
+                    Your perfect Rental partner
                 </p>
             </div>
         </div>

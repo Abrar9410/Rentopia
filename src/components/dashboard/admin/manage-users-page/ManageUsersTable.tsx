@@ -66,10 +66,10 @@ const ManageUsersTable = ({ users }: { users: IUser[] }) => {
 
         const toastId = toast.loading("Updating Info...");
         const formData = new FormData();
-        
+
         formData.append("data", JSON.stringify({ IsActive: status }));
         try {
-            const res = await updateUser( user._id, formData );
+            const res = await updateUser(user._id, formData);
 
             if (res.success) {
                 startTransition(() => {
@@ -83,14 +83,14 @@ const ManageUsersTable = ({ users }: { users: IUser[] }) => {
             toast.error(error.message || error.data.message || "Error occurred! Could not update status.", { id: toastId });
         }
     };
-    
+
     const makeAdmin = async (userId: string) => {
         const toastId = toast.loading("Updating Info...");
         const formData = new FormData();
-        
+
         formData.append("data", JSON.stringify({ role: UserRole.ADMIN }));
         try {
-            const res = await updateUser( userId, formData );
+            const res = await updateUser(userId, formData);
 
             if (res.success) {
                 startTransition(() => {
@@ -121,200 +121,198 @@ const ManageUsersTable = ({ users }: { users: IUser[] }) => {
     };
 
     return (
-        <div className="overflow-x-auto">
-            <Table className="text-center [&_th]:text-center [&_td]:text-center [&_th]:font-semibold">
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Image</TableHead>
-                        <TableHead>
-                            <p
-                                onClick={() => handleSort("name")}
-                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
-                            >
-                                Name
-                                {getSortIcon("name")}
-                            </p>
-                        </TableHead>
-                        <TableHead>
-                            <p
-                                onClick={() => handleSort("_id")}
-                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
-                            >
-                                User ID
-                                {getSortIcon("_id")}
-                            </p>
-                        </TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Phone</TableHead>
-                        <TableHead>Address</TableHead>
-                        <TableHead>
-                            <p
-                                onClick={() => handleSort("createdAt")}
-                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
-                            >
-                                Joined On
-                                {getSortIcon("createdAt")}
-                            </p>
-                        </TableHead>
-                        <TableHead>
-                            <p
-                                onClick={() => handleSort("earnings")}
-                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
-                            >
-                                Earnings
-                                {getSortIcon("earnings")}
-                            </p>
-                        </TableHead>
-                        <TableHead>
-                            <p
-                                onClick={() => handleSort("isVerified")}
-                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
-                            >
-                                Verified
-                                {getSortIcon("isVerified")}
-                            </p>
-                        </TableHead>
-                        <TableHead>
-                            <p
-                                onClick={() => handleSort("isActive")}
-                                className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
-                            >
-                                Status
-                                {getSortIcon("isActive")}
-                            </p>
-                        </TableHead>
-                        <TableHead>Actions</TableHead>
-                    </TableRow>
-                </TableHeader>
+        <Table className="text-center [&_th]:text-center [&_td]:text-center [&_th]:font-semibold">
+            <TableHeader>
+                <TableRow>
+                    <TableHead>Image</TableHead>
+                    <TableHead>
+                        <p
+                            onClick={() => handleSort("name")}
+                            className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
+                        >
+                            Name
+                            {getSortIcon("name")}
+                        </p>
+                    </TableHead>
+                    <TableHead>
+                        <p
+                            onClick={() => handleSort("_id")}
+                            className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
+                        >
+                            User ID
+                            {getSortIcon("_id")}
+                        </p>
+                    </TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Phone</TableHead>
+                    <TableHead>Address</TableHead>
+                    <TableHead>
+                        <p
+                            onClick={() => handleSort("createdAt")}
+                            className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
+                        >
+                            Joined On
+                            {getSortIcon("createdAt")}
+                        </p>
+                    </TableHead>
+                    <TableHead>
+                        <p
+                            onClick={() => handleSort("earnings")}
+                            className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
+                        >
+                            Earnings
+                            {getSortIcon("earnings")}
+                        </p>
+                    </TableHead>
+                    <TableHead>
+                        <p
+                            onClick={() => handleSort("isVerified")}
+                            className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
+                        >
+                            Verified
+                            {getSortIcon("isVerified")}
+                        </p>
+                    </TableHead>
+                    <TableHead>
+                        <p
+                            onClick={() => handleSort("isActive")}
+                            className="flex justify-center items-center p-2 hover:text-foreground transition-colors font-medium cursor-pointer select-none"
+                        >
+                            Status
+                            {getSortIcon("isActive")}
+                        </p>
+                    </TableHead>
+                    <TableHead>Actions</TableHead>
+                </TableRow>
+            </TableHeader>
 
-                <TableBody>
-                    {users?.length > 0 ? (
-                        users.map((user: IUser) => (
-                            <TableRow key={user._id}>
+            <TableBody>
+                {users?.length > 0 ? (
+                    users.map((user: IUser) => (
+                        <TableRow key={user._id}>
 
-                                {/* Picture */}
-                                <TableCell>
-                                    <Image
-                                        src={user.picture || "https://res.cloudinary.com"}
-                                        alt={user.name}
-                                        width={50}
-                                        height={50}
-                                        className="w-[50px] h-[50px] mx-auto"
-                                    />
-                                </TableCell>
+                            {/* Picture */}
+                            <TableCell>
+                                <Image
+                                    src={user.picture || "https://res.cloudinary.com"}
+                                    alt={user.name}
+                                    width={50}
+                                    height={50}
+                                    className="w-[50px] h-[50px] mx-auto"
+                                />
+                            </TableCell>
 
-                                {/* Name */}
-                                <TableCell>{user.name}</TableCell>
+                            {/* Name */}
+                            <TableCell>{user.name}</TableCell>
 
-                                {/* User ID */}
-                                <TableCell>{user._id}</TableCell>
+                            {/* User ID */}
+                            <TableCell>{user._id}</TableCell>
 
-                                {/* Email */}
-                                <TableCell>{user.email}</TableCell>
+                            {/* Email */}
+                            <TableCell>{user.email}</TableCell>
 
-                                {/* Phone */}
-                                <TableCell>{user.phone}</TableCell>
+                            {/* Phone */}
+                            <TableCell>{user.phone}</TableCell>
 
-                                {/* Address */}
-                                <TableCell>{user.address}</TableCell>
+                            {/* Address */}
+                            <TableCell>{user.address}</TableCell>
 
-                                {/* Joined On */}
-                                <TableCell>{format(user.createdAt, "PP")}</TableCell>
+                            {/* Joined On */}
+                            <TableCell>{format(user.createdAt, "PP")}</TableCell>
 
-                                {/* Earnings */}
-                                <TableCell>{user.earnings}</TableCell>
+                            {/* Earnings */}
+                            <TableCell>{user.earnings}</TableCell>
 
-                                {/* Verified */}
-                                <TableCell>
-                                    <div className="flex justify-center items-center gap-2">
-                                        {
-                                            user.isVerified ?
-                                                <span>✅</span> :
-                                                <span>❌</span>
-                                        }
-                                    </div>
-                                </TableCell>
+                            {/* Verified */}
+                            <TableCell>
+                                <div className="flex justify-center items-center gap-2">
+                                    {
+                                        user.isVerified ?
+                                            <span>✅</span> :
+                                            <span>❌</span>
+                                    }
+                                </div>
+                            </TableCell>
 
-                                {/* Active Status */}
-                                <TableCell>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Badge
-                                                className={cn(
-                                                    { "bg-green-500": user.isActive === IsActive.ACTIVE },
-                                                    { "bg-yellow-500": user.isActive === IsActive.INACTIVE },
-                                                    { "bg-red-500": user.isActive === IsActive.BLOCKED },
-                                                    "cursor-pointer hover:bg-primary"
-                                                )}
-                                            >
-                                                {user.isActive}
-                                            </Badge>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="center" className="w-max *:cursor-pointer">
-                                            <DropdownMenuItem
-                                                className="hover:bg-primary hover:text-white"
-                                                onClick={() => changeStatus(IsActive.ACTIVE, user)}
-                                            >
-                                                ACTIVE
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem
-                                                className="hover:bg-primary hover:text-white"
-                                                onClick={() => changeStatus(IsActive.INACTIVE, user)}
-                                            >
-                                                INACTIVE
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem
-                                                className="hover:bg-primary hover:text-white"
-                                                onClick={() => changeStatus(IsActive.BLOCKED, user)}
-                                            >
-                                                BLOCK
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
+                            {/* Active Status */}
+                            <TableCell>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Badge
+                                            className={cn(
+                                                { "bg-green-500": user.isActive === IsActive.ACTIVE },
+                                                { "bg-yellow-500": user.isActive === IsActive.INACTIVE },
+                                                { "bg-red-500": user.isActive === IsActive.BLOCKED },
+                                                "cursor-pointer hover:bg-primary"
+                                            )}
+                                        >
+                                            {user.isActive}
+                                        </Badge>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="center" className="w-max *:cursor-pointer">
+                                        <DropdownMenuItem
+                                            className="hover:bg-primary hover:text-white"
+                                            onClick={() => changeStatus(IsActive.ACTIVE, user)}
+                                        >
+                                            ACTIVE
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem
+                                            className="hover:bg-primary hover:text-white"
+                                            onClick={() => changeStatus(IsActive.INACTIVE, user)}
+                                        >
+                                            INACTIVE
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem
+                                            className="hover:bg-primary hover:text-white"
+                                            onClick={() => changeStatus(IsActive.BLOCKED, user)}
+                                        >
+                                            BLOCK
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </TableCell>
 
-                                {/* Actions */}
-                                <TableCell>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <Button variant="ghost" size="icon">
-                                                <MoreHorizontal className="h-4 w-4" />
-                                            </Button>
-                                        </PopoverTrigger>
-                                        <PopoverContent align="end" className="w-max p-1 space-y-2 *:cursor-pointer">
-                                            <ConfirmationAlert
-                                                onConfirm={() => makeAdmin(user._id)}
-                                                dialogDescription="This User will become an Admin!"
-                                            >
-                                                <p className="py-1 pl-1 pr-3 rounded-sm text-sm flex items-center gap-4 cursor-pointer hover:bg-accent">
-                                                    <ShieldUser className="h-4 w-4 text-primary" />
-                                                    Make Admin
-                                                </p>
-                                            </ConfirmationAlert>
-                                            <ConfirmationAlert
-                                                onConfirm={() => handleDeleteUser(user._id)}
-                                                dialogDescription="This User Account will be deleted permanently!"
-                                            >
-                                                <p className="py-1 pl-1 pr-3 rounded-sm text-sm flex items-center gap-4 cursor-pointer hover:bg-accent">
-                                                    <Trash2 className="h-4 w-4 text-red-500" />
-                                                    Delete
-                                                </p>
-                                            </ConfirmationAlert>
-                                        </PopoverContent>
-                                    </Popover>
-                                </TableCell>
-                            </TableRow>
-                        ))
-                    ) : (
-                        <TableRow>
-                            <TableCell colSpan={11} className="text-center">
-                                No Item Found
+                            {/* Actions */}
+                            <TableCell>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button variant="ghost" size="icon">
+                                            <MoreHorizontal className="h-4 w-4" />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent align="end" className="w-max p-1 space-y-2 *:cursor-pointer">
+                                        <ConfirmationAlert
+                                            onConfirm={() => makeAdmin(user._id)}
+                                            dialogDescription="This User will become an Admin!"
+                                        >
+                                            <p className="py-1 pl-1 pr-3 rounded-sm text-sm flex items-center gap-4 cursor-pointer hover:bg-accent">
+                                                <ShieldUser className="h-4 w-4 text-primary" />
+                                                Make Admin
+                                            </p>
+                                        </ConfirmationAlert>
+                                        <ConfirmationAlert
+                                            onConfirm={() => handleDeleteUser(user._id)}
+                                            dialogDescription="This User Account will be deleted permanently!"
+                                        >
+                                            <p className="py-1 pl-1 pr-3 rounded-sm text-sm flex items-center gap-4 cursor-pointer hover:bg-accent">
+                                                <Trash2 className="h-4 w-4 text-red-500" />
+                                                Delete
+                                            </p>
+                                        </ConfirmationAlert>
+                                    </PopoverContent>
+                                </Popover>
                             </TableCell>
                         </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-        </div>
+                    ))
+                ) : (
+                    <TableRow>
+                        <TableCell colSpan={11} className="text-center">
+                            No Item Found
+                        </TableCell>
+                    </TableRow>
+                )}
+            </TableBody>
+        </Table>
     );
 };
 
