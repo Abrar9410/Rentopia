@@ -81,16 +81,18 @@ If you’d like to run the portfolio locally:
 
 ```bash
 # Clone the repository
-git clone https://github.com/Abrar9410/My-Portfolio.git
+git clone https://github.com/Abrar9410/Rentopia.git
 
 # Navigate into the project directory
-cd My-Portfolio
+cd Rentopia
 
 # Install dependencies
 npm install
 
 # Create a .env.local file for environment variables
 NEXT_PUBLIC_BASE_API=your_backend_api
+JWT_SECRET=example
+REFRESH_JWT_SECRET=refresh-example
 NEXT_PUBLIC_SERVICE_ID=your_emailjs_service_id
 NEXT_PUBLIC_TEMPLATE_ID=your_emailjs_template_id
 NEXT_PUBLIC_USER_ID=your_emailjs_public_key
@@ -120,4 +122,4 @@ src/
 
 ## 🚀 Live Demo
 
-👉 **[Live Link](https://rentopi-crg.vercel.app)**
+👉 **[Live Link](https://rentopia-ctg.vercel.app)**
