@@ -158,7 +158,7 @@ const CustomerOrdersTable = ({ orders }: { orders: IOrder[] }) => {
                                     className="w-10 h-10 mx-auto"
                                 />
                                 <p>{order.item.title}</p>
-                                <p>{order.item._id}</p>
+                                <p className="text-muted-foreground">{order.item._id}</p>
                             </TableCell>
 
                             {/* Pick-up Location */}

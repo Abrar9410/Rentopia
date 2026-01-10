@@ -164,17 +164,15 @@ const MyOrdersTable = ({ orders }: { orders: IOrder[] }) => {
 
                             {/* Item */}
                             <TableCell>
-                                <div className="flex gap-1">
-                                    <Image
-                                        src={order.item.images[0] as string}
-                                        alt="Thumbnail"
-                                        width={40}
-                                        height={40}
-                                        className="w-10 h-10 mx-auto"
-                                    />
-                                    <p>{order.item.title}</p>
-                                </div>
-                                <p>{order.item._id}</p>
+                                <Image
+                                    src={order.item.images[0] as string}
+                                    alt="Thumbnail"
+                                    width={40}
+                                    height={40}
+                                    className="w-10 h-10 mx-auto"
+                                />
+                                <p>{order.item.title}</p>
+                                <p className="text-muted-foreground">{order.item._id}</p>
                             </TableCell>
 
                             {/* Pick-up Location */}
@@ -183,7 +181,7 @@ const MyOrdersTable = ({ orders }: { orders: IOrder[] }) => {
                             {/* Owner */}
                             <TableCell>{
                                 order.owner.role === UserRole.ADMIN ?
-                                    <div className="flex flex-col items-center justify-center gap-2">
+                                    <div className="min-w-[150px]">
                                         <Image
                                             src="/Rentopia-logo.PNG"
                                             alt={order.owner.name as string}
@@ -193,7 +191,7 @@ const MyOrdersTable = ({ orders }: { orders: IOrder[] }) => {
                                         />
                                         <p>Rentopia</p>
                                     </div> :
-                                    <div className="flex flex-col items-center justify-center gap-2">
+                                    <div className="min-w-[150px]">
                                         <Image
                                             src={order.owner.picture || "https://res.cloudinary.com"}
                                             alt={order.owner.name as string}
