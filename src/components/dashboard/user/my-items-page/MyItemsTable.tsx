@@ -205,7 +205,7 @@ const MyItemsTable = ({ items }: { items: IItem[] }) => {
 
                             {/* Description */}
                             <TableCell>
-                                <div className="max-w-[200px]">{item.description}</div>
+                                <div className="min-w-[200px] max-w-lg">{item.description}</div>
                             </TableCell>
 
                             {/* Category */}

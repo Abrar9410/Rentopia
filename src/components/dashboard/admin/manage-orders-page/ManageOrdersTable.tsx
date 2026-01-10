@@ -152,24 +152,22 @@ const ManageOrdersTable = ({ orders }: { orders: IOrder[] }) => {
 
                             {/* Item */}
                             <TableCell>
-                                <div className="flex gap-1">
-                                    <Image
-                                        src={order.item.images[0] as string}
-                                        alt="Thumbnail"
-                                        width={40}
-                                        height={40}
-                                        className="w-10 h-10 mx-auto"
-                                    />
-                                    <p>{order.item.title}</p>
-                                </div>
-                                <p>{order.item._id}</p>
+                                <Image
+                                    src={order.item.images[0] as string}
+                                    alt="Thumbnail"
+                                    width={40}
+                                    height={40}
+                                    className="w-10 h-10 mx-auto"
+                                />
+                                <p>{order.item.title}</p>
+                                <p className="text-muted-foreground">{order.item._id}</p>
                             </TableCell>
 
                             {/* Pick-up Location */}
                             <TableCell>{order.item.location}</TableCell>
 
                             {/* Owner */}
-                            <TableCell className="flex flex-col items-center justify-center gap-2">
+                            <TableCell className="min-w-[150px]">
                                 <Image
                                     src={order.owner.picture || "https://res.cloudinary.com"}
                                     alt={order.owner.name as string}
@@ -189,7 +187,7 @@ const ManageOrdersTable = ({ orders }: { orders: IOrder[] }) => {
                             </TableCell>
 
                             {/* Renter */}
-                            <TableCell className="flex flex-col items-center justify-center gap-2">
+                            <TableCell className="min-w-[150px]">
                                 <Image
                                     src={order.renter.picture || "https://res.cloudinary.com"}
                                     alt={order.owner.name as string}

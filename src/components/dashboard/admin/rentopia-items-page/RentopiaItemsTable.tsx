@@ -213,7 +213,9 @@ const RentopiaItemsTable = ({ items }: { items: IItem[] }) => {
                             <TableCell>{item._id}</TableCell>
 
                             {/* Description */}
-                            <TableCell className="max-w-lg">{item.description}</TableCell>
+                            <TableCell>
+                                <div className="min-w-[200px] max-w-lg">{item.description}</div>
+                            </TableCell>
 
                             {/* Category */}
                             <TableCell>{item.category}</TableCell>
