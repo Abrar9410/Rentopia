@@ -12,10 +12,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Password from "../ui/Password";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Password from "@/components/ui/Password";
 import { login } from "@/actions/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -44,7 +44,8 @@ export default function LoginForm ({redirect}: {redirect: string}) {
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     const toastId = toast.loading("Verifying Credentials...");
-    setSubmitting(true)
+    setSubmitting(true);
+    console.log(data);
     try {
       const res = await login(data);
       if (res.success) {
@@ -54,15 +55,39 @@ export default function LoginForm ({redirect}: {redirect: string}) {
         toast.error(res.message, { id: toastId });
       };
     } catch (err: any) {
-      toast.error(err.message, { id: toastId });
+      toast.error(err.message || err.data.message || "An error occurred! Please contact support.", { id: toastId });
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <Form {...form}>
+    <Form {...form}> 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* Demo Credentials */}
+        <Button
+          variant="secondary"
+          type="button"
+          className="w-full"
+          onClick={() => {
+            form.setValue("email", "admin1@rentopia.com");
+            form.setValue("password", "#Admin1Rentopia*");
+          }}
+        >
+          Demo Admin Credentials
+        </Button>
+        <Button
+          variant="secondary"
+          type="button"
+          className="w-full"
+          onClick={() => {
+            form.setValue("email", "mchowdhury@email.com");
+            form.setValue("password", "#User2Rentopia*");
+          }}
+        >
+          Demo User Credentials
+        </Button>
+
         <FormField
           control={form.control}
           name="email"
@@ -74,7 +99,6 @@ export default function LoginForm ({redirect}: {redirect: string}) {
                   type="email"
                   placeholder="john@example.com"
                   {...field}
-                  value={field.value || ""}
                 />
               </FormControl>
               <FormDescription className="sr-only">
