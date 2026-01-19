@@ -122,7 +122,7 @@ export default function NavbarContent({ user }: { user: Partial<IUser> | undefin
               <NavigationMenuItem key={index} className="h-full">
                 <NavigationMenuLink
                   asChild
-                    className="data-active:text-primary dark:data-active:text-blue-700 data-active:underline h-full justify-center rounded-none border-y-2 border-transparent py-1.5 font-medium hover:bg-transparent"
+                  className="data-active:text-primary dark:data-active:text-blue-700 data-active:underline h-full justify-center rounded-none border-y-2 border-transparent py-1.5 font-medium hover:bg-transparent"
                   active={link.href === "/" ? location === "/" : location.startsWith(link.href)}
                 >
                   <Link href={link.href}>{link.label}</Link>
