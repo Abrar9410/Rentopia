@@ -2,7 +2,7 @@
 
 import { UserRole } from "@/types";
 import { ISidebarMenuSection } from "@/types/sideMenu";
-import { Boxes, ChartBarStacked, ChessKing, CircleUser, Crown, Plus, ShieldUser, ShoppingCart, Store, Users, Wrench } from "lucide-react";
+import { Boxes, ChartBarStacked, ChessKing, Crown, Plus, ShieldUser, ShoppingCart, Store, Users, Wrench } from "lucide-react";
 
 
 export const getSideMenu = async (role: UserRole): Promise<ISidebarMenuSection[] | []> => {
@@ -66,17 +66,6 @@ export const getSideMenu = async (role: UserRole): Promise<ISidebarMenuSection[]
                         //     icon: <CircleUser className="h-5" /> 
                         // }
                     ]
-                },
-                {
-                    title: "Settings",
-                    url: "/admin/dashboard",
-                    items: [
-                        {
-                            title: "Profile",
-                            url: "/my-profile",
-                            icon: <CircleUser className="h-5" />
-                        }
-                    ]
                 }
             ];
 
@@ -128,17 +117,6 @@ export const getSideMenu = async (role: UserRole): Promise<ISidebarMenuSection[]
                         //     url: "/dashboard/payments",
                         //     icon: <CircleUser className="h-5" />
                         // }
-                    ]
-                },
-                {
-                    title: "Settings",
-                    url: "/dashboard",
-                    items: [
-                        {
-                            title: "Profile",
-                            url: "/my-profile",
-                            icon: <CircleUser className="h-5" />
-                        }
                     ]
                 }
             ];
