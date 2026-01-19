@@ -22,6 +22,7 @@ const PopularCategories = () => {
                                 src={"/categoryImage-Electronics.jpg"}
                                 alt={Category.ELECTRONICS}
                                 fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
 
@@ -43,6 +44,7 @@ const PopularCategories = () => {
                                 src={"/categoryImage-Furniture.webp"}
                                 alt={Category.FURNITURE}
                                 fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
 
@@ -64,6 +66,7 @@ const PopularCategories = () => {
                                 src={"/categoryImage-Tools.jpg"}
                                 alt={Category.TOOLS}
                                 fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
 
@@ -85,6 +88,7 @@ const PopularCategories = () => {
                                 src={"/categoryImage-Sports.avif"}
                                 alt={Category.SPORTS}
                                 fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
 
@@ -106,6 +110,7 @@ const PopularCategories = () => {
                                 src={"/categoryImage-Home_Appliances.jpg"}
                                 alt={Category.HOME_APPLIANCES}
                                 fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
 
@@ -127,6 +132,7 @@ const PopularCategories = () => {
                                 src={"/categoryImage-Books.jpg"}
                                 alt={Category.BOOKS}
                                 fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
 
@@ -148,6 +154,7 @@ const PopularCategories = () => {
                                 src={"/categoryImage-Gaming.jpg"}
                                 alt={Category.GAMING}
                                 fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
 
@@ -169,6 +176,7 @@ const PopularCategories = () => {
                                 src={"/categoryImage-Vehicles.avif"}
                                 alt={Category.VEHICLES}
                                 fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
 

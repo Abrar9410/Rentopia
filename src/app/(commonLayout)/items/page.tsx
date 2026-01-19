@@ -1,14 +1,14 @@
-import { getAllAvailableItems } from "@/actions/item";
-import ItemCard from "@/components/ItemCard";
+import ItemsGrid from "@/components/items-page/ItemsGrid";
+import ItemsGridFallback from "@/components/items-page/ItemsGridFallback";
 import PageHeader from "@/components/PageHeader";
-import Pagination from "@/components/Pagination";
 import RefreshButton from "@/components/RefreshButton";
 import SearchFilter from "@/components/SearchFilter";
 import SelectFilter from "@/components/SelectFilter";
 import { Separator } from "@/components/ui/separator";
 import { queryStringFormatter } from "@/lib/formatters";
-import { Category, Current_Status, IItem } from "@/types";
+import { Category, Current_Status } from "@/types";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 
 export const metadata: Metadata = {
@@ -21,8 +21,8 @@ const ItemsPage = async ({ searchParams }: { searchParams: Promise<{ [key: strin
 
     const searchParamsObj = await searchParams;
     const queryString = queryStringFormatter(searchParamsObj);
-    const {data: items, meta} = await getAllAvailableItems(queryString);
-
+    
+    const suspenseKey = JSON.stringify(searchParamsObj);
 
     return (
         <>
@@ -74,21 +74,9 @@ const ItemsPage = async ({ searchParams }: { searchParams: Promise<{ [key: strin
             </div>
             <Separator className="my-6"/>
             <div className="w-11/12 md:w-10/12 xl:w-9/12 mx-auto">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
-                    {
-                        items?.length > 0 ?
-                        items.map((item: IItem) => (
-                            <ItemCard
-                                key={item._id}
-                                item={item}
-                            />
-                        )) :
-                            <p className="col-span-1 sm:col-span-2 lg:col-span-3 2xl:col-span-4 text-center text-lg">
-                            No Items Available
-                        </p>
-                    }
-                </div>
-                <Pagination currentPage={meta.page} totalPages={meta.totalPages} limit={meta.limit} />
+                <Suspense key={suspenseKey} fallback={<ItemsGridFallback />}>
+                    <ItemsGrid queryString={queryString} />
+                </Suspense>
             </div>
         </>
     );

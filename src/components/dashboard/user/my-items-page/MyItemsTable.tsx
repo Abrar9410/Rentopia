@@ -189,7 +189,7 @@ const MyItemsTable = ({ items }: { items: IItem[] }) => {
                             {/* Thumbnail */}
                             <TableCell>
                                 <Image
-                                    src={item.images[0]}
+                                    src={item.images[0] || "https://res.cloudinary.com"}
                                     alt="Thumbnail"
                                     width={70}
                                     height={70}
