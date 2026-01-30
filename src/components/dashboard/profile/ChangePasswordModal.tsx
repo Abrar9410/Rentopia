@@ -50,6 +50,7 @@ const changePasswordSchema = z
 const ChangePasswordModal = ({ children }: IChangePasswordModalProps) => {
 
     const [open, setOpen] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
     const form = useForm<z.infer<typeof changePasswordSchema>>({
         resolver: zodResolver(changePasswordSchema),
@@ -61,7 +62,9 @@ const ChangePasswordModal = ({ children }: IChangePasswordModalProps) => {
     });
 
     const onSubmit = async (data: z.infer<typeof changePasswordSchema>) => {
-        const toastId = toast.loading("Saving Info...")
+        const toastId = toast.loading("Saving Info...");
+        setSubmitting(true);
+
         const passwordInfo = {
             oldPassword: data.oldPassword,
             newPassword: data.newPassword,
@@ -79,6 +82,8 @@ const ChangePasswordModal = ({ children }: IChangePasswordModalProps) => {
             };
         } catch (error: any) {
             toast.error(error.data.message, { id: toastId });
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -149,9 +154,19 @@ const ChangePasswordModal = ({ children }: IChangePasswordModalProps) => {
                         </div>
                         <DialogFooter>
                             <DialogClose asChild>
-                                <Button variant="outline" className="cursor-pointer">Cancel</Button>
+                                <Button type="button" variant="outline">Cancel</Button>
                             </DialogClose>
-                            <Button type="submit" className="cursor-pointer text-white">Save changes</Button>
+                            <Button
+                                type="submit"
+                                className="w-32"
+                                disabled={submitting}
+                            >
+                                {submitting ? (
+                                    <span className="w-3 h-3 border-2 animate-spin border-y-foreground dark:border-y-background border-x-transparent rounded-full" />
+                                ) : (
+                                    "Save changes"
+                                )}
+                            </Button>
                         </DialogFooter>
                     </form>
                 </Form>

@@ -128,6 +128,8 @@ export default function RegisterForm({ redirect }: { redirect: string }) {
       };
     } catch (error: any) {
       toast.error(error.message, { id: toastId });
+    } finally {
+      setSubmitting(false);
     }
   };
 

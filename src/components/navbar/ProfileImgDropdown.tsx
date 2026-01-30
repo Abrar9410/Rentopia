@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/popover";
 import Image from "next/image";
 import Link from "next/link";
-import { ThemeToggler } from "../ThemeToggler";
 import { usePathname, useRouter } from "next/navigation";
 import { CircleUser, Home, LogOut } from "lucide-react";
 import ConfirmationAlert from "../ConfirmationAlert";

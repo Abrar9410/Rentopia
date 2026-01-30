@@ -27,7 +27,7 @@ const ItemCard = ({ item }: { item: IItem }) => {
             {/* Thumbnail */}
             <div className="relative h-52 w-full overflow-hidden">
                 <Image
-                    src={images[0]}
+                    src={images[0] || "https://res.cloudinary.com"}
                     alt={title}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 25vw"

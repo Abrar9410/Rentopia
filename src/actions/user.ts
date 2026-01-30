@@ -103,13 +103,11 @@ export const updateUser = async (userId: string, payload: FormData) => {
         credentials: "include",
     });
 
-    if (!res.ok) {
-        return res;
+    if (res.ok) {
+        revalidateTag("USERS", "max");
+        revalidateTag("USER", { expire: 0 });
+        revalidateTag(`USER-${userId}`, { expire: 0 });
     };
-
-    revalidateTag("USERS", "max");
-    revalidateTag("USER", {expire: 0});
-    revalidateTag(`USER-${userId}`, {expire: 0});
      
     return await res.json();
 };
@@ -126,12 +124,10 @@ export const deleteUser = async (userId: string) => {
         credentials: "include",
     });
 
-    if (!res.ok) {
-        return res;
+    if (res.ok) {
+        revalidateTag("USERS", { expire: 0 });
+        revalidateTag(`USER-${userId}`, { expire: 0 });
     };
-
-    revalidateTag("USERS", { expire: 0 });
-    revalidateTag(`USER-${userId}`, { expire: 0 });
      
     return await res.json();
 };
